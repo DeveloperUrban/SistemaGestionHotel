@@ -9,7 +9,7 @@ window.Popper = require('popper.js').default;
  */
 
 try {
-    window.$ = window.jQuery = require('jquery');
+    //window.$ = window.jQuery = require('jquery'); Desabiltamos por que ya lo hemos cargado junto a la plnatilla
 
     require('bootstrap');
 } catch (e) {}
