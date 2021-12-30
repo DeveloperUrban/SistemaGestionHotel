@@ -13,3 +13,8 @@
 Route::get('/', function () {
     return view('contenido/contenido');
 });
+
+Route::get('/piso', 'PisoController@index');
+Route::post('/piso/registrar', 'PisoController@store');
+Route::put('/piso/actualizar','PisoController@update');
+Route::delete('/piso/eliminar','PisoController@destroy');
