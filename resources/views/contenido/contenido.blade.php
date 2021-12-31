@@ -22,7 +22,7 @@
 </template>
 
 <template v-if="menu==5">
-  <h1>Vista Pisos</h1>
+  <piso></piso>
 </template>
 
 <template v-if="menu==6">
