@@ -161,7 +161,34 @@
 
             }
         },
+        computed:{
+            isActived:function(){
+                return this.pagination.current_page;
+            },
 
+            //Calcula los elementos de la paginacion
+            pagesNumber:function(){
+                if (!this.pagination.to) { // Es diferente del ultimo elemento de la pagina actual
+                    return [];
+                }
+                //vamos a almacenar la resta de la pagina actual
+                var from = this.pagination.current_page-this.offset;
+                if(from<1)
+                {
+                    from=1;
+                }
+
+                var to = from + (this.offset*2);
+                if(to>=this.pagination.last_page){
+                    to=this.pagination.last_page;
+                }
+
+                var pagesArray = [];
+                while(from<=to  ){
+
+                }
+            }
+        },
         methods:{
             listarPisos(){
                 let me = this;
