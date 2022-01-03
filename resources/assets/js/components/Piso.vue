@@ -42,7 +42,7 @@
                                         <button @click="abirModal('piso','actualizar',piso)" type="button" class="btn btn-warning btn-sm" >
                                           <i class="icon-pencil"></i>
                                         </button> &nbsp;
-                                        <button type="button" class="btn btn-danger btn-sm" >
+                                        <button type="button" @click="eliminarPisos(piso.id)" class="btn btn-danger btn-sm" >
                                           <i class="icon-trash"></i>
                                         </button>
                                     </td>
@@ -140,12 +140,25 @@
     export default {
         data(){
             return{
+                idpiso:0,
                 nombre:'',
                 descripcion:'',
                 arrayPisos:[],
                 modal:0,
                 tituloModal:'',
-                tipoAccion:1
+                tipoAccion:1,
+                errorPiso:0,
+                errorMostrarMsjPiso:[],
+                pagination :{
+                    'total'         :0,
+                    'current_page'   :0,
+                    'per_page'       :0,
+                    'last_page'      :0,
+                    'from'           :0,
+                    'to'             :0
+                },
+                offset:3
+
             }
         },
 
@@ -176,16 +189,45 @@
             },
             actualizarPisos(){
                 let me = this;
-                axios.put('/piso/actualizar', {
-                'id':me.id
-                })
-                .then(function (response) {
-                    me.cerrarModal();
-                    me.listarPisos();
+                axios.put('/piso/actualizar',{
+                    'id':me.idpiso,
+                    'nombre':me.nombre,
+                    'descripcion':me.descripcion
+                }).then(function (response) {
+                   me.cerrarModal();
+                   me.listarPisos();
                 })
                 .catch(function (error) {
-                    console.log('No hay respuesta del servidor');
-                });
+                    // handle error
+                    console.log("No tenemos conexion al servidor");
+                })
+            },
+            eliminarPisos(idpiso){
+                Swal.fire({
+                title: '¿Estas seguro de Eliminar el Piso?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText:'Cancelar',
+                confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    let me = this;
+                    axios.delete('/piso/eliminar/' + idpiso).then(function (response) {
+                        me.listarPisos();                     
+                        Swal.fire(
+                        'Eliminado',      
+                        'El piso a sido eliminado satisfactoriamente',
+                        'success'
+                    )
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log("No tenemos conexion al servidor");
+                    })
+                }
+                })
             },
             cerrarModal(){
                 this.modal=0;
@@ -210,6 +252,7 @@
                             this.modal=1;
                             this.tituloModal='Actualizar Piso';
                             this.tipoAccion=2;
+                            this.idpiso=data['id']
                             this.nombre=data['nombre'];
                             this.descripcion=data['descripcion'];
                             break;

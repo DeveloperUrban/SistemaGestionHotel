@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Piso;
 
@@ -12,10 +13,26 @@ class PisoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       $piso = Piso::all();
-        return $piso;
+    //    $piso = Piso::all();
+    //     return $piso;
+        //Utilizando query builder
+        // $piso = DB::table('pisos')->paginate(8);
+        // return $piso;
+    //Ahora se hará la consulta usando eloquent
+        $pisos = Piso::paginate(8);
+        return [
+            'pagination'=>[
+                'total'          =>$pisos->total(),
+                'current_page'   =>$pisos->currentPage(),
+                'per_page'       =>$pisos->perPage(),
+                'last_page'      =>$pisos->lastPage(),
+                'from'           =>$pisos->firstItem(),
+                'to'             =>$pisos->lastItem(),
+            ],
+            'pisos'=>$pisos
+        ];
     }
 
     /**
@@ -47,9 +64,9 @@ class PisoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $piso = Piso::findOrFail($request->id);
+        $piso = Piso::findOrFail($id);
         $piso->delete();
     }
 }

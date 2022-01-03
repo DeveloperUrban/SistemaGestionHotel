@@ -17,4 +17,4 @@ Route::get('/', function () {
 Route::get('/piso', 'PisoController@index');
 Route::post('/piso/registrar', 'PisoController@store');
 Route::put('/piso/actualizar','PisoController@update');
-Route::delete('/piso/eliminar','PisoController@destroy');
+Route::delete('/piso/eliminar/{id}','PisoController@destroy');

@@ -82,8 +82,8 @@
 
  </div>
     <footer class="app-footer">
-        <span><a href="http://www.incanatoit.com/">Grupo Urbano</a> &copy; 2021</span>
-        <span class="ml-auto">Desarrollado por <a href="http://www.incanatoit.com/">Avimael Gervacio</a></span>
+        <span><a href="http://www.grupourbano.com.pe/">Grupo Urbano</a> &copy; 2021</span>
+        <span class="ml-auto">Desarrollado por <a href="https://m.facebook.com/avimael.gervaciorequena?fref=nf">Avimael Gervacio</a></span>
     </footer>
 
     <script src="js/app.js"></script>
