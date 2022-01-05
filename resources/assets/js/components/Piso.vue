@@ -54,17 +54,14 @@
                         </table>
                         <nav>
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Ant</a>
+                                <li class="page-item" v-if="pagination.current_page>1">
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1)">Ant</a>
                                 </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
+                                <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page==isActived ? 'active':'']">
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
                                 </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Sig</a>
+                                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                    <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
                                 </li>
                             </ul>
                         </nav>
@@ -184,21 +181,36 @@
                 }
 
                 var pagesArray = [];
-                while(from<=to  ){
-
+                while(from<=to){
+                    pagesArray.push(from);
+                    from++;
                 }
+
+                return pagesArray;
             }
         },
         methods:{
-            listarPisos(){
+            listarPisos(page){
                 let me = this;
-                axios.get('/piso').then(function (response) {
-                    me.arrayPisos=response.data;
+                let url = '/piso?page='+page;
+                axios.get(url).then(function (response) {
+                    //Declaramos una variable para almacenar la respuesta del servidor
+                    let respuesta = response.data;
+                    //me.arrayPisos=response.data; //De esta manera escuchamos directo del servidor
+                    me.arrayPisos = respuesta.pisos.data;
+                    me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log('No tenemos respuesta del servidor'+error);
                 })
+            },
+            cambiarPagina(page){ //EL parametro page va recibir el numero de la pagina
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page=page;
+                //Envia la petición para visualizar la data de esa pagina
+                me.listarPisos(page);
             },
             registrarPisos(){
                 let me = this;
@@ -307,4 +319,5 @@
         background-color: #3c29297a !important;
 
     }
+    
 </style>

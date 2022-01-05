@@ -21,7 +21,7 @@ class PisoController extends Controller
         // $piso = DB::table('pisos')->paginate(8);
         // return $piso;
     //Ahora se hará la consulta usando eloquent
-        $pisos = Piso::paginate(8);
+        $pisos = Piso::paginate(5);
         return [
             'pagination'=>[
                 'total'          =>$pisos->total(),
