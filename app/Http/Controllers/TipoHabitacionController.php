@@ -12,10 +12,34 @@ class TipohabitacionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tipos = Tipohabitacion::all();
-        return $tipos;
+        // $tipos = Tipohabitacion::all();
+        // return $tipos;
+       // if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        
+        if ($buscar==''){
+            $tipohabitacion = Tipohabitacion::orderBy('id', 'desc')->paginate(3);
+        }
+        else{
+            $tipohabitacion = Tipohabitacion::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
+        }
+        
+
+        return [
+            'pagination' => [
+                'total'        => $tipohabitacion->total(),
+                'current_page' => $tipohabitacion->currentPage(),
+                'per_page'     => $tipohabitacion->perPage(),
+                'last_page'    => $tipohabitacion->lastPage(),
+                'from'         => $tipohabitacion->firstItem(),
+                'to'           => $tipohabitacion->lastItem(),
+            ],
+            'tipohabitaciones' => $tipohabitacion
+        ];
     }
 
    

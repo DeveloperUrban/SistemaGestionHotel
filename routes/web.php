@@ -23,5 +23,5 @@ Route::delete('/piso/eliminar/{id}','PisoController@destroy');
 Route::get('/tipohabitacion', 'TipohabitacionController@index');
 Route::post('/tipohabitacion/registrar', 'TipohabitacionController@store');
 Route::put('/tipohabitacion/actualizar','TipohabitacionController@update');
-Route::delete('/tipohabitacion/desactivar','TipohabitacionController@desactivar');
-Route::delete('/tipohabitacion/activar','TipohabitacionController@activar');
+Route::put('/tipohabitacion/desactivar','TipohabitacionController@desactivar');
+Route::put('/tipohabitacion/activar','TipohabitacionController@activar');
