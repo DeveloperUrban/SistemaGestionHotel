@@ -25,3 +25,11 @@ Route::post('/tipohabitacion/registrar', 'TipohabitacionController@store');
 Route::put('/tipohabitacion/actualizar','TipohabitacionController@update');
 Route::put('/tipohabitacion/desactivar','TipohabitacionController@desactivar');
 Route::put('/tipohabitacion/activar','TipohabitacionController@activar');
+
+
+//Las rutas de la tabla habitacion
+Route::get('/habitacion', 'HabitacionController@index');
+Route::post('/habitacion/registrar', 'HabitacionController@store');
+Route::put('/habitacion/actualizar','HabitacionController@update');
+Route::put('/habitacion/desactivar','HabitacionController@desactivar');
+Route::put('/habitacion/activar','HabitacionController@activar');

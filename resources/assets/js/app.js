@@ -18,6 +18,7 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('piso', require('./components/Piso.vue'));
 Vue.component('tipohabitacion', require('./components/Tipohabitacion.vue'));
+Vue.component('habitacion', require('./components/Habitacion.vue'));
 
 const app = new Vue({
     el: '#app',

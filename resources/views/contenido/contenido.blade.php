@@ -14,7 +14,7 @@
 </template>
 
 <template v-if="menu==3">
-  <h1>Vista Habitaciones</h1>
+  <habitacion></habitacion>
 </template>
 
 <template v-if="menu==4">
