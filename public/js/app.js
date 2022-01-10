@@ -52799,7 +52799,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 // import VueBarcode from 'vue-barcode';
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -52829,7 +52828,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'to': 0
             },
             offset: 3,
-            criterio: 'nombre',
+            criterio: 'numero',
             buscar: '',
             arrayPiso: [],
             arrayTipohabitacion: []
@@ -52883,13 +52882,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // cargarPdf(){
         //     window.open(this.ruta + '/articulo/listarPdf','_blank');
         // },
-        selectCategoria: function selectCategoria() {
+        seleccionarPiso: function seleccionarPiso() {
             var me = this;
-            var url = this.ruta + '/categoria/selectCategoria';
+            var url = '/piso/selectPiso';
             axios.get(url).then(function (response) {
                 //console.log(response);
                 var respuesta = response.data;
-                me.arrayCategoria = respuesta.categorias;
+                me.arrayPiso = respuesta.pisos;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        seleccionarTipohabitacion: function seleccionarTipohabitacion() {
+            var me = this;
+            var url = '/tipohabitacion/selectTipohabitacion';
+            axios.get(url).then(function (response) {
+                //console.log(response);
+                var respuesta = response.data;
+                me.arrayTipohabitacion = respuesta.tipohabitaciones;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -52899,113 +52909,98 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //Actualiza la página actual
             me.pagination.current_page = page;
             //Envia la petición para visualizar la data de esa página
-            me.listarArticulo(page, buscar, criterio);
+            me.listarHabitacion(page, buscar, criterio);
         },
-        registrarArticulo: function registrarArticulo() {
-            if (this.validarArticulo()) {
-                return;
-            }
+        registrarHabitacion: function registrarHabitacion() {
+            // if (this.validarHabitacion()){
+            //     return;
+            // }
 
             var me = this;
 
-            axios.post(this.ruta + '/articulo/registrar', {
-                'idcategoria': this.idcategoria,
-                'codigo': this.codigo,
-                'nombre': this.nombre,
-                'stock': this.stock,
-                'precio_venta': this.precio_venta,
-                'descripcion': this.descripcion
+            axios.post('/habitacion/registrar', {
+                'idpiso': this.idpiso,
+                'idtipohabitacion': this.idtipohabitacion,
+                'numero': this.numero,
+                'detalle': this.detalle,
+                'precio': this.precio
             }).then(function (response) {
+                console.log(response);
                 me.cerrarModal();
-                me.listarArticulo(1, '', 'nombre');
+                me.listarHabitacion(1, '', 'numero');
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        actualizarArticulo: function actualizarArticulo() {
-            if (this.validarArticulo()) {
-                return;
-            }
+        actualizarHabitacion: function actualizarHabitacion() {
+            //    if (this.validarArticulo()){
+            //         return;
+            //     }
 
             var me = this;
-
-            axios.put(this.ruta + '/articulo/actualizar', {
-                'idcategoria': this.idcategoria,
-                'codigo': this.codigo,
-                'nombre': this.nombre,
-                'stock': this.stock,
-                'precio_venta': this.precio_venta,
-                'descripcion': this.descripcion,
-                'id': this.articulo_id
+            axios.put('/habitacion/actualizar', {
+                'idpiso': this.idpiso,
+                'idtipohabitacion': this.idtipohabitacion,
+                'numero': this.numero,
+                'detalle': this.detalle,
+                'precio': this.precio,
+                'id': this.habitacion_id
             }).then(function (response) {
                 me.cerrarModal();
-                me.listarArticulo(1, '', 'nombre');
+                me.listarHabitacion(1, '', 'numero');
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        desactivarArticulo: function desactivarArticulo(id) {
+        desactivarHabitacion: function desactivarHabitacion(id) {
             var _this = this;
 
-            swal({
-                title: 'Esta seguro de desactivar este artículo?',
-                type: 'warning',
+            Swal.fire({
+                title: '¿Desactivar Habitacion?',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
                 cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
+                confirmButtonText: 'Desactivar'
             }).then(function (result) {
-                if (result.value) {
+                if (result.isConfirmed) {
                     var me = _this;
-
-                    axios.put(_this.ruta + '/articulo/desactivar', {
+                    axios.put('/habitacion/desactivar', {
                         'id': id
                     }).then(function (response) {
-                        me.listarArticulo(1, '', 'nombre');
-                        swal('Desactivado!', 'El registro ha sido desactivado con éxito.', 'success');
+                        me.listarHabitacion(1, '', 'numero');
+                        Swal.fire('Desactivado', 'La Habitacion ha sido desactivado satisfactoriamente', 'success');
                     }).catch(function (error) {
                         console.log(error);
                     });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
+                }
             });
         },
-        activarArticulo: function activarArticulo(id) {
+        activarHabitacion: function activarHabitacion(id) {
             var _this2 = this;
 
-            swal({
-                title: 'Esta seguro de activar este artículo?',
-                type: 'warning',
+            Swal.fire({
+                title: '¿Activar Habitacion?',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
                 cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
+                confirmButtonText: 'Activar'
             }).then(function (result) {
-                if (result.value) {
+                if (result.isConfirmed) {
                     var me = _this2;
-
-                    axios.put(_this2.ruta + '/articulo/activar', {
+                    axios.put('/habitacion/activar', {
                         'id': id
                     }).then(function (response) {
-                        me.listarArticulo(1, '', 'nombre');
-                        swal('Activado!', 'El registro ha sido activado con éxito.', 'success');
+                        me.listarHabitacion(1, '', 'numero');
+                        Swal.fire('Activado', 'La Habitacion ha sido activado satisfactoriamente', 'success');
                     }).catch(function (error) {
+                        console.log('No tenemos respuesta del servidor');
                         console.log(error);
                     });
-                } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel) {}
+                }
             });
         },
         validarArticulo: function validarArticulo() {
@@ -53056,11 +53051,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 }
                             case 'actualizar':
                                 {
-                                    //console.log(data);
                                     this.modal = 1;
                                     this.tituloModal = 'Actualizar Habitacion';
                                     this.tipoAccion = 2;
-                                    this.habitacion_id_id = data['id'];
+                                    this.habitacion_id = data['id'];
                                     this.idpiso = data['idpiso'];
                                     this.idtipohabitacion = data['idtipohabitacion'];
                                     this.numero = data['numero'];
@@ -53071,7 +53065,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         }
                     }
             }
-            this.selectCategoria();
+            this.seleccionarPiso();
+            this.seleccionarTipohabitacion();
         }
     },
     mounted: function mounted() {
@@ -53110,23 +53105,6 @@ var render = function() {
               _c("i", { staticClass: "icon-plus" }),
               _vm._v(" Nuevo\n                ")
             ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-info",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.cargarPdf()
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "icon-doc" }),
-              _vm._v(" Reporte\n                ")
-            ]
           )
         ]),
         _vm._v(" "),
@@ -53163,12 +53141,8 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", { attrs: { value: "nombre" } }, [
-                      _vm._v("Nombre")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "descripcion" } }, [
-                      _vm._v("Descripción")
+                    _c("option", { attrs: { value: "numero" } }, [
+                      _vm._v("Numero")
                     ])
                   ]
                 ),
@@ -53193,7 +53167,7 @@ var render = function() {
                       ) {
                         return null
                       }
-                      return _vm.listarArticulo(1, _vm.buscar, _vm.criterio)
+                      return _vm.listarHabitacion(1, _vm.buscar, _vm.criterio)
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -53211,7 +53185,7 @@ var render = function() {
                     attrs: { type: "submit" },
                     on: {
                       click: function($event) {
-                        return _vm.listarArticulo(1, _vm.buscar, _vm.criterio)
+                        return _vm.listarHabitacion(1, _vm.buscar, _vm.criterio)
                       }
                     }
                   },
@@ -53261,7 +53235,7 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.desactivarArticulo(
+                                      return _vm.desactivarHabitacion(
                                         habitacion.id
                                       )
                                     }
@@ -53278,7 +53252,9 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.activarArticulo(habitacion.id)
+                                      return _vm.activarHabitacion(
+                                        habitacion.id
+                                      )
                                     }
                                   }
                                 },
@@ -53303,12 +53279,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: {
-                        textContent: _vm._s(habitacion.tipo_habitacion)
+                        textContent: _vm._s(habitacion.nombre_tipohabitacion)
                       }
                     }),
                     _vm._v(" "),
                     _c("td", {
-                      domProps: { textContent: _vm._s(habitacion.piso) }
+                      domProps: { textContent: _vm._s(habitacion.nombre_piso) }
                     }),
                     _vm._v(" "),
                     _c("td", [
@@ -53608,8 +53584,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.idcategoria,
-                                expression: "idcategoria"
+                                value: _vm.idpiso,
+                                expression: "idpiso"
                               }
                             ],
                             staticClass: "form-control",
@@ -53623,7 +53599,7 @@ var render = function() {
                                     var val = "_value" in o ? o._value : o.value
                                     return val
                                   })
-                                _vm.idcategoria = $event.target.multiple
+                                _vm.idpiso = $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
                               }
@@ -53636,12 +53612,12 @@ var render = function() {
                               [_vm._v("Seleccione")]
                             ),
                             _vm._v(" "),
-                            _vm._l(_vm.arrayCategoria, function(categoria) {
+                            _vm._l(_vm.arrayPiso, function(piso) {
                               return _c("option", {
-                                key: categoria.id,
+                                key: piso.id,
                                 domProps: {
-                                  value: categoria.id,
-                                  textContent: _vm._s(categoria.nombre)
+                                  value: piso.id,
+                                  textContent: _vm._s(piso.nombre)
                                 }
                               })
                             })
@@ -53658,7 +53634,7 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "text-input" }
                         },
-                        [_vm._v("Categoria")]
+                        [_vm._v("Tipo Habitacion")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-md-9" }, [
@@ -53669,8 +53645,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.idcategoria,
-                                expression: "idcategoria"
+                                value: _vm.idtipohabitacion,
+                                expression: "idtipohabitacion"
                               }
                             ],
                             staticClass: "form-control",
@@ -53684,7 +53660,7 @@ var render = function() {
                                     var val = "_value" in o ? o._value : o.value
                                     return val
                                   })
-                                _vm.idcategoria = $event.target.multiple
+                                _vm.idtipohabitacion = $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
                               }
@@ -53697,12 +53673,14 @@ var render = function() {
                               [_vm._v("Seleccione")]
                             ),
                             _vm._v(" "),
-                            _vm._l(_vm.arrayCategoria, function(categoria) {
+                            _vm._l(_vm.arrayTipohabitacion, function(
+                              tipohabitacion
+                            ) {
                               return _c("option", {
-                                key: categoria.id,
+                                key: tipohabitacion.id,
                                 domProps: {
-                                  value: categoria.id,
-                                  textContent: _vm._s(categoria.nombre)
+                                  value: tipohabitacion.id,
+                                  textContent: _vm._s(tipohabitacion.nombre)
                                 }
                               })
                             })
@@ -53719,8 +53697,8 @@ var render = function() {
                           {
                             name: "show",
                             rawName: "v-show",
-                            value: _vm.errorArticulo,
-                            expression: "errorArticulo"
+                            value: _vm.errorHabitacion,
+                            expression: "errorHabitacion"
                           }
                         ],
                         staticClass: "form-group row div-error"
@@ -53729,7 +53707,9 @@ var render = function() {
                         _c(
                           "div",
                           { staticClass: "text-center text-error" },
-                          _vm._l(_vm.errorMostrarMsjArticulo, function(error) {
+                          _vm._l(_vm.errorMostrarMsjHabitacion, function(
+                            error
+                          ) {
                             return _c("div", {
                               key: error,
                               domProps: { textContent: _vm._s(error) }
@@ -53766,7 +53746,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.registrarArticulo()
+                            return _vm.registrarHabitacion()
                           }
                         }
                       },
@@ -53782,7 +53762,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.actualizarArticulo()
+                            return _vm.actualizarHabitacion()
                           }
                         }
                       },

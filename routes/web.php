@@ -18,6 +18,7 @@ Route::get('/piso', 'PisoController@index');
 Route::post('/piso/registrar', 'PisoController@store');
 Route::put('/piso/actualizar','PisoController@update');
 Route::delete('/piso/eliminar/{id}','PisoController@destroy');
+Route::get('/piso/selectPiso','PisoController@selectPiso');
 
 //Las rutas de la tabla tipo habitacion
 Route::get('/tipohabitacion', 'TipohabitacionController@index');
@@ -25,6 +26,7 @@ Route::post('/tipohabitacion/registrar', 'TipohabitacionController@store');
 Route::put('/tipohabitacion/actualizar','TipohabitacionController@update');
 Route::put('/tipohabitacion/desactivar','TipohabitacionController@desactivar');
 Route::put('/tipohabitacion/activar','TipohabitacionController@activar');
+Route::get('/tipohabitacion/selectTipohabitacion', 'TipohabitacionController@selectTipohabitacion');
 
 
 //Las rutas de la tabla habitacion

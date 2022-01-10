@@ -12,20 +12,19 @@
                         <button type="button" @click="abrirModal('habitacion','registrar')" class="btn btn-secondary">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
-                        <button type="button" @click="cargarPdf()" class="btn btn-info">
+                        <!-- <button type="button" @click="cargarPdf()" class="btn btn-info">
                             <i class="icon-doc"></i>&nbsp;Reporte
-                        </button>
+                        </button> -->
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <select class="form-control col-md-3" v-model="criterio">
-                                      <option value="nombre">Nombre</option>
-                                      <option value="descripcion">Descripción</option>
+                                      <option value="numero">Numero</option>
                                     </select>
-                                    <input type="text" v-model="buscar" @keyup.enter="listarArticulo(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" @click="listarArticulo(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" v-model="buscar" @keyup.enter="listarHabitacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                    <button type="submit" @click="listarHabitacion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -48,12 +47,12 @@
                                           <i class="icon-pencil"></i>
                                         </button> &nbsp;
                                         <template v-if="habitacion.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarArticulo(habitacion.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarHabitacion(habitacion.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-info btn-sm" @click="activarArticulo(habitacion.id)">
+                                            <button type="button" class="btn btn-info btn-sm" @click="activarHabitacion(habitacion.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
@@ -61,8 +60,8 @@
                                     <td v-text="habitacion.numero"></td>
                                     <td v-text="habitacion.detalle"></td>
                                     <td v-text="habitacion.precio"></td>
-                                    <td v-text="habitacion.tipo_habitacion"></td>
-                                    <td v-text="habitacion.piso"></td>
+                                    <td v-text="habitacion.nombre_tipohabitacion"></td>
+                                    <td v-text="habitacion.nombre_piso"></td>
                                     <td>
                                         <div v-if="habitacion.estado">
                                             <span class="badge badge-success">Activo</span>
@@ -129,26 +128,26 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Piso</label>
                                     <div class="col-md-9">
-                                        <select class="form-control" v-model="idcategoria">
+                                        <select class="form-control" v-model="idpiso">
                                             <option value="0" disabled>Seleccione</option>
-                                            <option v-for="categoria in arrayCategoria" :key="categoria.id" :value="categoria.id" v-text="categoria.nombre"></option>
+                                            <option v-for="piso in arrayPiso" :key="piso.id" :value="piso.id" v-text="piso.nombre"></option>
                                         </select>                                        
                                     </div>
                                 </div>
 
                                  <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="text-input">Categoria</label>
+                                    <label class="col-md-3 form-control-label" for="text-input">Tipo Habitacion</label>
                                     <div class="col-md-9">
-                                        <select class="form-control" v-model="idcategoria">
-                                            <option value="0" disabled>Seleccione</option>
-                                            <option v-for="categoria in arrayCategoria" :key="categoria.id" :value="categoria.id" v-text="categoria.nombre"></option>
+                                        <select class="form-control" v-model="idtipohabitacion">
+                                            <option value="0" disabled>Seleccione</option>                             
+                                            <option v-for="tipohabitacion in arrayTipohabitacion" :key="tipohabitacion.id" :value="tipohabitacion.id" v-text="tipohabitacion.nombre"></option>
                                         </select>                                        
                                     </div>
                                 </div>
 
-                                <div v-show="errorArticulo" class="form-group row div-error">
+                                <div v-show="errorHabitacion" class="form-group row div-error">
                                     <div class="text-center text-error">
-                                        <div v-for="error in errorMostrarMsjArticulo" :key="error" v-text="error">
+                                        <div v-for="error in errorMostrarMsjHabitacion" :key="error" v-text="error">
 
                                         </div>
                                     </div>
@@ -158,8 +157,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarArticulo()">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarArticulo()">Actualizar</button>
+                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarHabitacion()">Guardar</button>
+                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarHabitacion()">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -199,7 +198,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'nombre',
+                criterio : 'numero',
                 buscar : '',
                 arrayPiso :[],
                 arrayTipohabitacion:[]
@@ -253,13 +252,26 @@
             // cargarPdf(){
             //     window.open(this.ruta + '/articulo/listarPdf','_blank');
             // },
-            selectCategoria(){
+            seleccionarPiso(){
                 let me=this;
-                var url= this.ruta + '/categoria/selectCategoria';
+                var url= '/piso/selectPiso';
                 axios.get(url).then(function (response) {
                     //console.log(response);
                     var respuesta= response.data;
-                    me.arrayCategoria = respuesta.categorias;
+                    me.arrayPiso = respuesta.pisos;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            seleccionarTipohabitacion(){
+                let me=this;
+                var url= '/tipohabitacion/selectTipohabitacion';
+                axios.get(url).then(function (response) {
+                    //console.log(response);
+                    var respuesta= response.data;
+                    me.arrayTipohabitacion = respuesta.tipohabitaciones;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -270,128 +282,106 @@
                 //Actualiza la página actual
                 me.pagination.current_page = page;
                 //Envia la petición para visualizar la data de esa página
-                me.listarArticulo(page,buscar,criterio);
+                me.listarHabitacion(page,buscar,criterio);
             },
-            registrarArticulo(){
-                if (this.validarArticulo()){
-                    return;
-                }
+            registrarHabitacion(){
+                // if (this.validarHabitacion()){
+                //     return;
+                // }
                 
                 let me = this;
 
-                axios.post(this.ruta + '/articulo/registrar',{
-                    'idcategoria': this.idcategoria,
-                    'codigo': this.codigo,
-                    'nombre': this.nombre,
-                    'stock': this.stock,
-                    'precio_venta': this.precio_venta,
-                    'descripcion': this.descripcion
+                axios.post('/habitacion/registrar',{
+                    'idpiso':this.idpiso,
+                    'idtipohabitacion':this.idtipohabitacion,
+                    'numero':this.numero,
+                    'detalle':this.detalle,
+                    'precio':this.precio
                 }).then(function (response) {
+                    console.log(response);
                     me.cerrarModal();
-                    me.listarArticulo(1,'','nombre');
+                    me.listarHabitacion(1,'','numero');
+
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
-            actualizarArticulo(){
-               if (this.validarArticulo()){
-                    return;
-                }
+            actualizarHabitacion(){
+            //    if (this.validarArticulo()){
+            //         return;
+            //     }
                 
                 let me = this;
-
-                axios.put(this.ruta + '/articulo/actualizar',{
-                    'idcategoria': this.idcategoria,
-                    'codigo': this.codigo,
-                    'nombre': this.nombre,
-                    'stock': this.stock,
-                    'precio_venta': this.precio_venta,
-                    'descripcion': this.descripcion,
-                    'id': this.articulo_id
+                axios.put('/habitacion/actualizar',{
+                    'idpiso': this.idpiso,
+                    'idtipohabitacion': this.idtipohabitacion,
+                    'numero': this.numero,
+                    'detalle':this.detalle,
+                    'precio': this.precio,
+                    'id':this.habitacion_id
                 }).then(function (response) {
                     me.cerrarModal();
-                    me.listarArticulo(1,'','nombre');
+                    me.listarHabitacion(1,'','numero');
                 }).catch(function (error) {
                     console.log(error);
                 }); 
             },
-            desactivarArticulo(id){
-               swal({
-                title: 'Esta seguro de desactivar este artículo?',
-                type: 'warning',
+            desactivarHabitacion(id){
+                Swal.fire({
+                title: '¿Desactivar Habitacion?',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
+                cancelButtonText:'Cancelar',
+                confirmButtonText: 'Desactivar'
                 }).then((result) => {
-                if (result.value) {
+                if (result.isConfirmed) {
                     let me = this;
-
-                    axios.put(this.ruta + '/articulo/desactivar',{
-                        'id': id
+                    axios.put('/habitacion/desactivar',{
+                        'id':id
                     }).then(function (response) {
-                        me.listarArticulo(1,'','nombre');
-                        swal(
-                        'Desactivado!',
-                        'El registro ha sido desactivado con éxito.',
+                        me.listarHabitacion(1,'','numero');
+                        Swal.fire(
+                        'Desactivado',
+                        'La Habitacion ha sido desactivado satisfactoriamente',
                         'success'
-                        )
+                    )
                     }).catch(function (error) {
                         console.log(error);
                     });
                     
-                    
-                } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === swal.DismissReason.cancel
-                ) {
-                    
                 }
-                }) 
+                })
             },
-            activarArticulo(id){
-               swal({
-                title: 'Esta seguro de activar este artículo?',
-                type: 'warning',
+            activarHabitacion(id){
+              Swal.fire({
+                title: '¿Activar Habitacion?',
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar!',
-                cancelButtonText: 'Cancelar',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false,
-                reverseButtons: true
+                cancelButtonText:'Cancelar',
+                confirmButtonText: 'Activar'
                 }).then((result) => {
-                if (result.value) {
+                if (result.isConfirmed) {
                     let me = this;
-
-                    axios.put(this.ruta + '/articulo/activar',{
-                        'id': id
+                    axios.put('/habitacion/activar',{
+                        'id':id
                     }).then(function (response) {
-                        me.listarArticulo(1,'','nombre');
-                        swal(
-                        'Activado!',
-                        'El registro ha sido activado con éxito.',
+                        me.listarHabitacion(1,'','numero');
+                        Swal.fire(
+                        'Activado',
+                        'La Habitacion ha sido activado satisfactoriamente',
                         'success'
-                        )
+                    )
                     }).catch(function (error) {
+                        console.log('No tenemos respuesta del servidor');
                         console.log(error);
                     });
                     
-                    
-                } else if (
-                    // Read more about handling dismissals
-                    result.dismiss === swal.DismissReason.cancel
-                ) {
-                    
                 }
-                }) 
+                })
             },
             validarArticulo(){
                 this.errorArticulo=0;
@@ -439,11 +429,10 @@
                             }
                             case 'actualizar':
                             {
-                                //console.log(data);
                                 this.modal=1;
                                 this.tituloModal='Actualizar Habitacion';
                                 this.tipoAccion=2;
-                                this.habitacion_id_id=data['id'];
+                                this.habitacion_id=data['id'];
                                 this.idpiso=data['idpiso'];
                                 this.idtipohabitacion=data['idtipohabitacion'];
                                 this.numero=data['numero'];
@@ -454,7 +443,8 @@
                         }
                     }
                 }
-                this.selectCategoria();
+                this.seleccionarPiso();
+                this.seleccionarTipohabitacion();
             }
         },
         mounted() {

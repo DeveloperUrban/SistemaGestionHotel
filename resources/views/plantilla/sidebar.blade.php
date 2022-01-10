@@ -40,6 +40,9 @@
                             <li @click="menu=6" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-wallet"></i> Categórias</a>
                             </li>
+                            <li @click="menu=6" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-wallet"></i> SubCategórias</a>
+                            </li>
                             <li @click="menu=7" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-notebook"></i>Productos</a>
                             </li>

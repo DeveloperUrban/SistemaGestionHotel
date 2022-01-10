@@ -35,6 +35,14 @@ class PisoController extends Controller
         ];
     }
 
+    public function selectPiso(Request $request){
+        // if (!$request->ajax()) return redirect('/');
+        // $categorias = Categoria::where('condicion','=','1')
+        // ->select('id','nombre')->orderBy('nombre', 'asc')->get();
+        // return ['categorias' => $categorias];
+        $pisos = Piso::select('id','nombre')->orderBy('nombre','asc')->get();
+        return ['pisos'=>$pisos];
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -42,7 +42,16 @@ class TipohabitacionController extends Controller
         ];
     }
 
-   
+    public function selectTipohabitacion(Request $request){
+        // if (!$request->ajax()) return redirect('/');
+        // $categorias = Categoria::where('condicion','=','1')
+        // ->select('id','nombre')->orderBy('nombre', 'asc')->get();
+        // return ['categorias' => $categorias];
+        $tipohabitaciones = Tipohabitacion::where('condicion','=','1')
+                            ->select('id','nombre')->orderBy('nombre','asc')->get();
+                            return ['tipohabitaciones'=>$tipohabitaciones];
+    }
+
     public function store(Request $request)
     {
         $tipohabitacion = new Tipohabitacion();
