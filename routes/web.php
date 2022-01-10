@@ -13,7 +13,7 @@
 Route::get('/', function () {
     return view('contenido/contenido');
 });
-
+//Las rutas de la tabla Piso
 Route::get('/piso', 'PisoController@index');
 Route::post('/piso/registrar', 'PisoController@store');
 Route::put('/piso/actualizar','PisoController@update');
@@ -35,3 +35,17 @@ Route::post('/habitacion/registrar', 'HabitacionController@store');
 Route::put('/habitacion/actualizar','HabitacionController@update');
 Route::put('/habitacion/desactivar','HabitacionController@desactivar');
 Route::put('/habitacion/activar','HabitacionController@activar');
+
+//Las rutas de la tabla Categorias
+Route::get('/categoria', 'CategoriaController@index');
+Route::post('/categoria/registrar', 'CategoriaController@store');
+Route::put('/categoria/actualizar','CategoriaController@update');
+Route::put('/categoria/desactivar','CategoriaController@desactivar');
+Route::put('/categoria/activar','CategoriaController@activar');
+
+//Las rutas de la tabla SubCategorias
+Route::get('/subcategoria', 'SubcategoriaController@index');
+Route::post('/subcategoria/registrar', 'SubcategoriaController@store');
+Route::put('/subcategoria/actualizar','SubcategoriaController@update');
+Route::put('/subcategoria/desactivar','SubcategoriaController@desactivar');
+Route::put('/subcategoria/activar','SubcategoriaController@activar');
