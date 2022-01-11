@@ -49,26 +49,6 @@ class HabitacionController extends Controller
         ];
     }
 
-    public function ListarHabitacion(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $buscar = $request->buscar;
-        $criterio = $request->criterio;
-
-        if($buscar==''){
-            $habitaciones = Habitacion::join('pisos','habitaciones.idpiso','=','pisos.id')
-            ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
-            ->select('numero','detalle','precio','tipohabitaciones.nombre as tipo_habitacion','pisos.nombre as piso','estado')
-            ->orderBy('habitaciones.id','desc')->paginate(3);
-        }
-        else{
-            $habitaciones = Habitacion::join('pisos','habitaciones.idpiso','=','pisos.id')
-            ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
-            ->select('numero','detalle','precio','tipohabitaciones.nombre as tipo_habitacion','pisos.nombre as piso','estado')
-            ->where('habitaciones.'.$criterio,'like','%'.$buscar.'%')
-            ->orderBy('habitaciones.id','desc')->paginate(3);
-        }
-    }
     public function store(Request $request){
         //if (!$request->ajax()) return redirect('/');
         $habitacion = new Habitacion();

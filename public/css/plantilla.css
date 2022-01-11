@@ -510,6 +510,11 @@ pre {
     .container {
       max-width: 1140px; } }
 
+
+/* Se agrega nuevos estilos */
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df !important;
+}
 .container-fluid {
   width: 100%;
   margin-right: auto;
@@ -2747,7 +2752,9 @@ tbody.collapse.show {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid #c2cfd6; }
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+}
 
 .card-body, .card-block {
   -ms-flex: 1 1 auto;

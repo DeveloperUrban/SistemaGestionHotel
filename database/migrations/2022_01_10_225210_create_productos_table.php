@@ -15,6 +15,7 @@ class CreateProductosTable extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('idcategoria')->unsigned();
             $table->integer('idsubcategoria')->unsigned();
             $table->string('codigo', 50)->nullable();
             $table->string('nombre', 100)->unique();
@@ -23,7 +24,7 @@ class CreateProductosTable extends Migration
             $table->string('descripcion', 256)->nullable();
             $table->boolean('condicion')->default(1);
             $table->timestamps();
-
+            $table->foreign('idcategoria')->references('id')->on('categorias');
             $table->foreign('idsubcategoria')->references('id')->on('subcategorias');
         });
     }

@@ -2,7 +2,7 @@
 @section('contenido')
 
 <template v-if="menu==0">
-  <example-component></example-component>
+  <dasboard></dasboard>
 </template>
 
 <template v-if="menu==1">
@@ -26,34 +26,39 @@
 </template>
 
 <template v-if="menu==6">
-  <h1>Vista Categorias</h1>
+  <categoria></categoria>
 </template>
 
 <template v-if="menu==7">
+  <subcategoria></subcategoria>
+</template>
+
+
+<template v-if="menu==8">
   <h1>Vista Productos</h1>
 </template>
 
-<template v-if="menu==8">
+<template v-if="menu==9">
   <h1>Vista Ventas</h1>
 </template>
 
-<template v-if="menu==9">
+<template v-if="menu==10">
   <h1>Vista Clientes</h1>
 </template>
 
-<template v-if="menu==10">
+<template v-if="menu==11">
   <h1>Vista Usuarios</h1>
 </template>
 
-<template v-if="menu==11">
+<template v-if="menu==12">
   <h1>Vista Roles</h1>
 </template>
 
-<template v-if="menu==12">
+<template v-if="menu==13">
   <h1>Vista Reporte Recepcion</h1>
 </template>
 
-<template v-if="menu==13">
+<template v-if="menu==14">
   <h1>Vista Reporte Ventas</h1>
 </template>
 @endsection
