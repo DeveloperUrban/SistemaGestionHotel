@@ -44,11 +44,11 @@ class SubcategoriaController extends Controller
         ];
     }
 
-    public function selectCategoria(Request $request){
+    public function selectSubcategoria(Request $request){
         //if (!$request->ajax()) return redirect('/');
-        $categorias = Categoria::where('condicion','=','1')
+        $subcategorias = Subcategoria::where('condicion','=','1')
         ->select('id','nombre')->orderBy('nombre', 'asc')->get();
-        return ['categorias' => $categorias];
+        return ['subcategorias' => $subcategorias];
     }
     /**
      * Store a newly created resource in storage.

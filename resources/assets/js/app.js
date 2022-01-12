@@ -21,6 +21,7 @@ Vue.component('tipohabitacion', require('./components/Tipohabitacion.vue'));
 Vue.component('habitacion', require('./components/Habitacion.vue'));
 Vue.component('categoria', require('./components/Categoria.vue'));
 Vue.component('subcategoria', require('./components/Subcategoria.vue'));
+Vue.component('producto', require('./components/Producto.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -33,9 +33,8 @@
   <subcategoria></subcategoria>
 </template>
 
-
 <template v-if="menu==8">
-  <h1>Vista Productos</h1>
+  <producto></producto>
 </template>
 
 <template v-if="menu==9">

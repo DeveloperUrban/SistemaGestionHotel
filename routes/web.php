@@ -52,6 +52,7 @@ Route::post('/subcategoria/registrar', 'SubcategoriaController@store');
 Route::put('/subcategoria/actualizar','SubcategoriaController@update');
 Route::put('/subcategoria/desactivar','SubcategoriaController@desactivar');
 Route::put('/subcategoria/activar','SubcategoriaController@activar');
+Route::get('/subcategoria/selectSubcategoria', 'SubcategoriaController@selectSubcategoria');
 
 //Las rutas de las tablas de Productos
 Route::get('/producto', 'ProductoController@index');
@@ -59,3 +60,11 @@ Route::post('/producto/registrar', 'ProductoController@store');
 Route::put('/producto/actualizar','ProductoController@update');
 Route::put('/producto/desactivar','ProductoController@desactivar');
 Route::put('/producto/activar','ProductoController@activar');
+
+
+//Las rutas de la tabla Cliente
+Route::get('/cliente', 'ClienteController@index');
+Route::post('/cliente/registrar', 'ClienteController@store');
+Route::put('/cliente/actualizar','ClienteController@update');
+Route::put('/cliente/desactivar','ClienteController@desactivar');
+Route::put('/cliente/activar','ClienteController@activar');

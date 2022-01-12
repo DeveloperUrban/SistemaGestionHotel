@@ -22,15 +22,15 @@ class ProductoController extends Controller
              ->join('subcategorias','productos.idsubcategoria','=','subcategorias.id')
              ->select('productos.id','productos.idcategoria','categorias.nombre as nombre_categoria','productos.idsubcategoria',
                      'subcategorias.nombre as nombre_subcategoria','productos.codigo','productos.nombre','productos.precio_venta',
-                     'productos.stock','productos.descripcion','','productos.condicion')
+                     'productos.stock','productos.descripcion','productos.condicion')
                      ->orderBy('productos.id','desc')->paginate(10);
          }
          else{
             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
-            ->join('subcategorias','productos.idsubcategoria','=','subcategorias.id')
-            ->select('productos.id','productos.idcategoria','categorias.nombre as nombre_categoria','productos.idsubcategoria',
-                    'subcategorias.nombre as nombre_subcategoria','productos.codigo','productos.nombre','productos.precio_venta',
-                    'productos.stock','productos.descripcion','','productos.condicion')
+             ->join('subcategorias','productos.idsubcategoria','=','subcategorias.id')
+             ->select('productos.id','productos.idcategoria','categorias.nombre as nombre_categoria','productos.idsubcategoria',
+                     'subcategorias.nombre as nombre_subcategoria','productos.codigo','productos.nombre','productos.precio_venta',
+                     'productos.stock','productos.descripcion','productos.condicion')
              ->where('productos.'.$criterio,'like','%'.$buscar.'%')        
              ->orderBy('productos.id','desc')->paginate(10);
          }
@@ -51,41 +51,45 @@ class ProductoController extends Controller
  
      public function store(Request $request){
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = new Habitacion();
-         $habitacion->idpiso = $request->idpiso;
-         $habitacion->idtipohabitacion = $request->idtipohabitacion;
-         $habitacion->numero = $request->numero;
-         $habitacion->detalle = $request->detalle;
-         $habitacion->precio = $request->precio;
-         $habitacion->estado = '1';
-         $habitacion->save();
+         $producto = new Producto();
+         $producto->idcategoria = $request->idcategoria;
+         $producto->idsubcategoria = $request->idsubcategoria;
+         $producto->codigo = $request->codigo;
+         $producto->nombre = $request->nombre;
+         $producto->precio_venta = $request->precio_venta;
+         $producto->stock=$request->stock;
+         $producto->descripcion = $request->descripcion;
+         $producto->condicion = '1';
+         $producto->save();
      }
  
      public function update(Request $request)
      {
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = Habitacion::findOrFail($request->id);
-         $habitacion->numero = $request->numero;
-         $habitacion->detalle = $request->detalle;
-         $habitacion->precio = $request->precio;
-         $habitacion->idpiso = $request->idpiso;
-         $habitacion->idtipohabitacion = $request->idtipohabitacion;
-         $habitacion->estado = '1';
-         $habitacion->save();
+         $producto = Producto::findOrFail($request->id);
+         $producto->idcategoria = $request->idcategoria;
+         $producto->idsubcategoria = $request->idsubcategoria;
+         $producto->codigo = $request->codigo;
+         $producto->nombre = $request->nombre;
+         $producto->precio_venta = $request->precio_venta;
+         $producto->stock=$request->stock;
+         $producto->descripcion = $request->descripcion;
+         $producto->condicion = '1';
+         $producto->save();
      }
  
      public function activar(Request $request){
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = Habitacion::findOrFail($request->id);
-         $habitacion->estado='1';
-         $habitacion->save();
+         $producto = Producto::findOrFail($request->id);
+         $producto->condicion='1';
+         $producto->save();
      }
  
      public function desactivar(Request $request)
      {
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = Habitacion::findOrFail($request->id);
-         $habitacion->estado='0';
-         $habitacion->save();
+         $producto = Producto::findOrFail($request->id);
+         $producto->condicion='0';
+         $producto->save();
      }
 }
