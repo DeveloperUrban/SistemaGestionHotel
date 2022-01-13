@@ -42,7 +42,7 @@
 </template>
 
 <template v-if="menu==10">
-  <h1>Vista Clientes</h1>
+  <cliente></cliente>
 </template>
 
 <template v-if="menu==11">

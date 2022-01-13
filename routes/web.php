@@ -68,3 +68,8 @@ Route::post('/cliente/registrar', 'ClienteController@store');
 Route::put('/cliente/actualizar','ClienteController@update');
 Route::put('/cliente/desactivar','ClienteController@desactivar');
 Route::put('/cliente/activar','ClienteController@activar');
+
+//Las rutas para la cargar departamentos,provincias y distritos
+Route::get('/departamento/selectDepartamento', 'UbigeController@selectDepartamento');
+Route::get('/provincia/SelectProvincia', 'UbigeController@SelectProvincia');
+Route::get('/distrito/SelectDistrito', 'UbigeController@SelectDistrito');

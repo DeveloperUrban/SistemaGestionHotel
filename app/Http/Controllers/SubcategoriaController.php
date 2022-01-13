@@ -75,7 +75,7 @@ class SubcategoriaController extends Controller
      */
     public function update(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        // if (!$request->ajax()) return redirect('/');
         $subcategoria = Subcategoria::findOrFail($request->id);
         $subcategoria->nombre = $request->nombre;
         $subcategoria->descripcion = $request->descripcion;

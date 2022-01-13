@@ -15,10 +15,8 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->integer('id')->unsigned();
-            $table->string('ruc',10)->nullable();
             $table->string('nombre_empresa',50)->nullable();
             $table->string('motivo_hospedaje',50)->nullable();
-
             $table->foreign('id')->references('id')->on('personas')->onDelete('cascade');
         });
     }

@@ -225,16 +225,16 @@
                 });
             },
             actualizarSubcategoria(){
-               if (this.validarSubcategoria()){
-                    return;
-                }
+            //    if (this.validarSubcategoria()){
+            //         return;
+            //     }
                 
                 let me = this;
 
                 axios.put('/subcategoria/actualizar',{
                     'nombre': this.nombre,
                     'descripcion': this.descripcion,
-                    'id': this.categoria_id
+                    'id': this.subcategoria_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarSubcategoria(1,'','nombre');
