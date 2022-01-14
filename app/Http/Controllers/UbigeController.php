@@ -22,18 +22,14 @@ class UbigeController extends Controller
 
     public function SelectProvincia(Request $request)
     {
-        $provincias = Provincia::select('id','provincia')
-        ->where('id_departamento','=','1')
-        ->orderBy('provincia','asc')->get();
-
+        $provincias = Provincia::where('id_departamento',$request->id_departamento)
+                                ->select('id','provincia')->get();
         return ['provincias'=>$provincias];
     }
 
     public function SelectDistrito(Request $request){
-        $distritos = Distrito::select('id','distrito')
-        ->where('id_provincia','=','128')
-        ->orderBy('distrito','asc')->get();
-
+        $distritos = Distrito::where('id_provincia',$request->id_provincia)
+                             ->select('id','distrito')->get();
         return ['distritos'=>$distritos];
     }
 }

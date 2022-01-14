@@ -15,16 +15,21 @@ class CreatePersonasTable extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_departamento')->unsigned();
+            $table->integer('id_provincia')->unsigned();
+            $table->integer('id_distrito')->unsigned();
             $table->string('apellidos_nombre',100)->unique();
             $table->string('tipo_documento',20)->nullable();
             $table->string('numero_documento',10)->nullable();
-            $table->string('departamento',50);
-            $table->string('provincia',50);
-            $table->string('distrito',50);
             $table->string('direccion',70)->nullable();
             $table->string('sexo',20)->nullable();
             $table->string('celular',10)->nullable();
             $table->string('email',50)->nullable();
+
+            $table->foreign('id_departamento')->references('id')->on('departamentos');
+            $table->foreign('id_provincia')->references('id')->on('provincias');
+            $table->foreign('id_distrito')->references('id')->on('distritos');
+
             $table->timestamps();
         });
     }

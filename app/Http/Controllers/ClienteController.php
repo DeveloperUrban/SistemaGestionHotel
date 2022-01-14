@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Cliente;
+use App\Persona;
 
 class ClienteController extends Controller
 {
@@ -14,25 +14,31 @@ class ClienteController extends Controller
          // return $habitaciones;
          $buscar = $request->buscar;
          $criterio = $request->criterio;
-        dd($request);
- 
          if($buscar=='')
          {
-            $personas = Cliente::join('personas','clientes.id','=','personas.id')
-                        ->select('personas.id','personas.apellidos_nombre','personas.tipo_documento',
-                        'personas.numero_documento','personas.departamento','personas.provincia','personas.distrito',
-                        'personas.direccion','personas.sexo','personas.celular','personas.email',
-                        'clientes.nombre_empresa','clientes.motivo_hospedaje')
-                        ->orderBy('personas.id','desc')->paginate(10);
+            $personas =Persona::join('clientes','personas.id','=','clientes.id')
+                            ->join('departamentos','personas.id_departamento','=','departamentos.id')
+                            ->join('provincias','personas.id_provincia','=','provincias.id')
+                            ->join('distritos','personas.id_distrito','=','distritos.id')
+                            ->select('personas.id','personas.apellidos_nombre','personas.tipo_documento',
+                            'personas.numero_documento','departamentos.id as id_departamento','departamentos.departamento',
+                            'provincias.id as id_provincia','provincias.provincia','distritos.id as id_distrito','distritos.distrito',
+                            'personas.direccion','personas.sexo','personas.celular','personas.email','clientes.nombre_empresa',
+                            'clientes.motivo_hospedaje')
+                            ->orderBy('personas.id','desc')->paginate(10);
          }
          else{
-            $personas = Cliente::join('personas','clientes.id','=','personas.id')
-                        ->select('personas.id','personas.apellidos_nombre','personas.tipo_documento',
-                        'personas.numero_documento','personas.departamento','personas.provincia','personas.distrito',
-                        'personas.direccion','personas.sexo','personas.celular','personas.email',
-                        'clientes.nombre_empresa','clientes.motivo_hospedaje')
-            ->where('personas.'.$criterio,'like','%'.$buscar.'%')
-            ->orderBy('personas.id','desc')->paginate(10);
+            $personas =Persona::join('clientes','personas.id','=','clientes.id')
+                            ->join('departamentos','personas.id_departamento','=','departamentos.id')
+                            ->join('provincias','personas.id_provincia','=','provincias.id')
+                            ->join('distritos','personas.id_distrito','=','distritos.id')
+                            ->select('personas.id','personas.apellidos_nombre','personas.tipo_documento',
+                            'personas.numero_documento','departamentos.id as id_departamento','departamentos.departamento',
+                            'provincias.id as id_provincia','provincias.provincia','distritos.id as id_distrito','distritos.distrito',
+                            'personas.direccion','personas.sexo','personas.celular','personas.email','clientes.nombre_empresa',
+                            'clientes.motivo_hospedaje')
+                            ->where('personas.'.$criterio,'like','%'.$buscar.'%')
+                            ->orderBy('personas.id','desc')->paginate(10);
          }
  
          return [

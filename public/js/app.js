@@ -60827,12 +60827,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             apellidos_nombre: '',
             tipo_documento: 'DNI',
             numero_documento: '',
+
+            id_departamento: 0,
             departamento: '',
             arrayDepartamentos: [],
+
+            id_provincia: 0,
             provincia: '',
+            arrayProvincia: [],
+
+            id_distrito: 0,
             distrito: '',
+            arrayDistrito: [],
+
             direccion: '',
-            sexo: 'Masculino',
+            sexo: '',
             celular: '',
             email: '',
             nombre_empresa: '',
@@ -60915,8 +60924,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        selectProvincia: function selectProvincia() {},
-        selectDistrito: function selectDistrito() {},
+        selectProvincia: function selectProvincia() {
+            var me = this;
+            var url = '/provincia/SelectProvincia';
+            axios.get(url, { params: { id_departamento: this.id_departamento } }).then(function (response) {
+                console.log(response);
+                var respuesta = response.data;
+                me.arrayProvincia = respuesta.provincias;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        selectDistrito: function selectDistrito() {
+            var me = this;
+            var url = '/distrito/SelectDistrito';
+            axios.get(url, { params: { id_provincia: this.id_provincia } }).then(function (response) {
+                //console.log(response);
+                var respuesta = response.data;
+                me.arrayDistrito = respuesta.distritos;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
         registrarPersona: function registrarPersona() {
             // if (this.validarPersona()){
             //     return;
@@ -60939,9 +60968,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         actualizarPersona: function actualizarPersona() {
-            if (this.validarPersona()) {
-                return;
-            }
+            //    if (this.validarPersona()){
+            //         return;
+            //     }
 
             var me = this;
 
@@ -60992,28 +61021,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 {
                                     this.modal = 1;
                                     this.tituloModal = 'Registrar Cliente';
-                                    this.nombre = '';
+                                    this.apellidos_nombre = '';
                                     this.tipo_documento = 'DNI';
-                                    this.num_documento = '';
+                                    this.numero_documento = '';
+                                    this.id_departamento = 0;
+                                    this.departamento = '';
+                                    this.id_provincia = 0;
+                                    this.provincia = '';
+                                    this.id_distrito = 0;
+                                    this.distrito = '';
                                     this.direccion = '';
-                                    this.telefono = '';
+                                    this.sexo = '';
+                                    this.celular = '';
                                     this.email = '';
+                                    this.nombre_empresa = '';
+                                    this.movito_hospedaje = '';
                                     this.tipoAccion = 1;
                                     break;
                                 }
                             case 'actualizar':
                                 {
-                                    //console.log(data);
+                                    console.log(data);
                                     this.modal = 1;
                                     this.tituloModal = 'Actualizar Cliente';
                                     this.tipoAccion = 2;
-                                    this.persona_id = data['id'];
-                                    this.nombre = data['nombre'];
+                                    this.apellidos_nombre = data['apellidos_nombre'];
                                     this.tipo_documento = data['tipo_documento'];
-                                    this.num_documento = data['num_documento'];
+                                    this.numero_documento = data['numero_documento'];
+                                    this.id_departamento = data['id_departamento'];
+                                    this.id_provincia = data['id_provincia'];
+                                    this.id_distrito = data['id_distrito'];
                                     this.direccion = data['direccion'];
-                                    this.telefono = data['telefono'];
+                                    this.sexo = data['sexo'];
+                                    this.celular = data['celular'];
                                     this.email = data['email'];
+                                    this.nombre_empresa = data['nombre_empresa'];
+                                    this.movito_hospedaje = data['motivo_hospedaje'];
                                     break;
                                 }
                         }
@@ -61021,6 +61064,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.selectDepartamento();
+            this.selectProvincia();
+            this.selectDistrito();
         }
     },
     mounted: function mounted() {
@@ -61539,32 +61584,38 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.departamento,
-                                    expression: "departamento"
+                                    value: _vm.id_departamento,
+                                    expression: "id_departamento"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.departamento = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.id_departamento = $event.target
+                                        .multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    _vm.selectProvincia
+                                  ]
                                 }
                               },
                               [
                                 _c(
                                   "option",
-                                  { attrs: { value: "-1", disabled: "" } },
+                                  { attrs: { value: "0", disabled: "" } },
                                   [_vm._v("Seleccione")]
                                 ),
                                 _vm._v(" "),
@@ -61572,7 +61623,7 @@ var render = function() {
                                   return _c("option", {
                                     key: depa.id,
                                     domProps: {
-                                      value: depa.departamento,
+                                      value: depa.id,
                                       textContent: _vm._s(depa.departamento)
                                     }
                                   })
@@ -61601,41 +61652,51 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.provincia,
-                                    expression: "provincia"
+                                    value: _vm.id_provincia,
+                                    expression: "id_provincia"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.provincia = $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  }
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.id_provincia = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    _vm.selectDistrito
+                                  ]
                                 }
                               },
                               [
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("LIMA")
-                                ]),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "0", disabled: "" } },
+                                  [_vm._v("Seleccione")]
+                                ),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("ANCASH")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("PUNO")
-                                ])
-                              ]
+                                _vm._l(_vm.arrayProvincia, function(prov) {
+                                  return _c("option", {
+                                    key: prov.id,
+                                    domProps: {
+                                      value: prov.id,
+                                      textContent: _vm._s(prov.provincia)
+                                    }
+                                  })
+                                })
+                              ],
+                              2
                             )
                           ])
                         ]),
@@ -61658,8 +61719,8 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.distrito,
-                                    expression: "distrito"
+                                    value: _vm.id_distrito,
+                                    expression: "id_distrito"
                                   }
                                 ],
                                 staticClass: "form-control",
@@ -61674,25 +61735,30 @@ var render = function() {
                                           "_value" in o ? o._value : o.value
                                         return val
                                       })
-                                    _vm.distrito = $event.target.multiple
+                                    _vm.id_distrito = $event.target.multiple
                                       ? $$selectedVal
                                       : $$selectedVal[0]
                                   }
                                 }
                               },
                               [
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("LIMA")
-                                ]),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "0", disabled: "" } },
+                                  [_vm._v("Seleccione")]
+                                ),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("ANCASH")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("PUNO")
-                                ])
-                              ]
+                                _vm._l(_vm.arrayDistrito, function(dis) {
+                                  return _c("option", {
+                                    key: dis.id,
+                                    domProps: {
+                                      value: dis.id,
+                                      textContent: _vm._s(dis.distrito)
+                                    }
+                                  })
+                                })
+                              ],
+                              2
                             )
                           ])
                         ]),
@@ -61773,15 +61839,19 @@ var render = function() {
                                 }
                               },
                               [
-                                _c("option", { attrs: { value: "1" } }, [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Seleccione")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "M" } }, [
                                   _vm._v("MASCULINO")
                                 ]),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
+                                _c("option", { attrs: { value: "F" } }, [
                                   _vm._v("FEMENINO")
                                 ]),
                                 _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
+                                _c("option", { attrs: { value: "O" } }, [
                                   _vm._v("OTRO")
                                 ])
                               ]

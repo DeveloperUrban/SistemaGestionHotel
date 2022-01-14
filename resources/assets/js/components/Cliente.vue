@@ -128,9 +128,9 @@
                                      <div class="col-sm-4">
                                         <div class="form-group">
                                             <label class="col-md-4 form-control-label" for="text-input">Departamento(*)</label>
-                                            <select v-model="departamento" class="form-control">
-                                            <option value="-1" disabled>Seleccione</option>
-                                            <option v-for="depa in arrayDepartamentos" :key="depa.id" :value="depa.departamento" v-text="depa.departamento"></option>
+                                            <select v-model="id_departamento" @change="selectProvincia" class="form-control">
+                                            <option value="0" disabled>Seleccione</option>
+                                            <option v-for="depa in arrayDepartamentos" :key="depa.id" :value="depa.id" v-text="depa.departamento"></option>
                                         </select>
                                         </div>
                                     </div>
@@ -138,10 +138,10 @@
                                      <div class="col-sm-4">
                                         <div class="form-group">
                                             <label class="col-md-4 form-control-label" for="text-input">Provincia(*)</label>
-                                            <select v-model="provincia" class="form-control">
-                                            <option value="1">LIMA</option>
-                                            <option value="2">ANCASH</option>
-                                            <option value="3">PUNO</option>
+                                            <select v-model="id_provincia" @change="selectDistrito" class="form-control">
+                                            <option value="0" disabled>Seleccione</option>
+                                            <option v-for="prov in arrayProvincia" :key="prov.id" :value="prov.id" v-text="prov.provincia"></option>
+                                            
                                         </select>
                                         </div>
                                     </div>
@@ -149,10 +149,9 @@
                                      <div class="col-sm-4">
                                         <div class="form-group">
                                             <label class="col-md-4 form-control-label" for="text-input">Distrito(*)</label>
-                                            <select v-model="distrito" class="form-control">
-                                            <option value="1">LIMA</option>
-                                            <option value="2">ANCASH</option>
-                                            <option value="3">PUNO</option>
+                                            <select v-model="id_distrito" class="form-control">
+                                            <option value="0" disabled>Seleccione</option>
+                                            <option v-for="dis in arrayDistrito" :key="dis.id" :value="dis.id" v-text="dis.distrito"></option>
                                         </select>
                                         </div>
                                     </div>
@@ -168,9 +167,10 @@
                                         <div class="form-group">
                                             <label class="col-md-4 form-control-label" for="text-input">Sexo(*)</label>
                                             <select v-model="sexo" class="form-control">
-                                            <option value="1">MASCULINO</option>
-                                            <option value="2">FEMENINO</option>
-                                            <option value="3">OTRO</option>
+                                            <option value="">Seleccione</option>
+                                            <option value="M">MASCULINO</option>
+                                            <option value="F">FEMENINO</option>
+                                            <option value="O">OTRO</option>
                                         </select>
                                         </div>
                                     </div>
@@ -231,12 +231,21 @@
                 apellidos_nombre: '',
                 tipo_documento : 'DNI',
                 numero_documento : '',
+
+                id_departamento:0,
                 departamento:'',
                 arrayDepartamentos:[],
+
+                id_provincia:0,
                 provincia:'',
+                arrayProvincia:[],
+                
+                id_distrito:0,
                 distrito:'',
+                arrayDistrito:[],
+
                 direccion:'',
-                sexo:'Masculino',
+                sexo:'',
                 celular:'',
                 email : '',
                 nombre_empresa:'',
@@ -323,11 +332,29 @@
             },
 
             selectProvincia(){
-
+                let me=this;
+                var url='/provincia/SelectProvincia'
+                axios.get(url,{params:{id_departamento:this.id_departamento}}).then(function (response) {
+                    console.log(response);
+                    var respuesta= response.data;
+                    me.arrayProvincia = respuesta.provincias;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
 
             selectDistrito(){
-
+                let me=this;
+                var url='/distrito/SelectDistrito';
+                axios.get(url,{params:{id_provincia:this.id_provincia}}).then(function (response) {
+                    //console.log(response);
+                    var respuesta= response.data;
+                    me.arrayDistrito = respuesta.distritos;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
 
             registrarPersona(){
@@ -352,9 +379,9 @@
                 });
             },
             actualizarPersona(){
-               if (this.validarPersona()){
-                    return;
-                }
+            //    if (this.validarPersona()){
+            //         return;
+            //     }
                 
                 let me = this;
 
@@ -404,35 +431,53 @@
                             {
                                 this.modal = 1;
                                 this.tituloModal = 'Registrar Cliente';
-                                this.nombre= '';
+                                this.apellidos_nombre= '';
                                 this.tipo_documento='DNI';
-                                this.num_documento='';
+                                this.numero_documento='';
+                                this.id_departamento=0;
+                                this.departamento='';
+                                this.id_provincia=0;
+                                this.provincia='';
+                                this.id_distrito=0;
+                                this.distrito='';
                                 this.direccion='';
-                                this.telefono='';
+                                this.sexo='';
+                                this.celular='';
                                 this.email='';
+                                this.nombre_empresa='';
+                                this.movito_hospedaje='';
                                 this.tipoAccion = 1;
                                 break;
                             }
                             case 'actualizar':
                             {
-                                //console.log(data);
+                                console.log(data);
                                 this.modal=1;
                                 this.tituloModal='Actualizar Cliente';
                                 this.tipoAccion=2;
-                                this.persona_id=data['id'];
-                                this.nombre = data['nombre'];
-                                this.tipo_documento = data['tipo_documento'];
-                                this.num_documento = data['num_documento'];
-                                this.direccion = data['direccion'];
-                                this.telefono = data['telefono'];
-                                this.email = data['email'];
+                                this.apellidos_nombre= data['apellidos_nombre'];
+                                this.tipo_documento=data['tipo_documento'];
+                                this.numero_documento=data['numero_documento'];
+                                this.id_departamento=data['id_departamento'];
+                                this.id_provincia=data['id_provincia'];
+                                this.id_distrito=data['id_distrito'];
+                                this.direccion=data['direccion'];
+                                this.sexo=data['sexo'];
+                                this.celular=data['celular'];
+                                this.email=data['email'];
+                                this.nombre_empresa=data['nombre_empresa'];
+                                this.movito_hospedaje=data['motivo_hospedaje'];
                                 break;
+                            
                             }
                         }
                     }
                 }
 
                 this.selectDepartamento();
+                this.selectProvincia();
+                this.selectDistrito();
+                
             }
         },
         mounted() {
