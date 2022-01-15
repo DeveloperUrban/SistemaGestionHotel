@@ -103,7 +103,7 @@
                                      <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Apellidos y Nombres(*)</label>
-                                            <input type="text" v-model="apellidos_nombre" class="form-control" placeholder="Apellidos y nombres">
+                                            <input type="text" v-model="apellidos_nombre" style="text-transform:uppercase;" class="form-control" placeholder="Apellidos y nombres" required>
                                         </div>
                                     </div>
 
@@ -199,7 +199,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-md-12 form-control-label" for="text-input">Motivo Hospedaje(*)</label>
-                                            <textarea  type="text" v-model="movito_hospedaje" class="form-control" placeholder="Motivo Hospedaje"></textarea>
+                                            <input  type="text" v-model="motivo_hospedaje" class="form-control" placeholder="Motivo Hospedaje">
                                         </div>
                                     </div>
 
@@ -210,8 +210,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarPersona()">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarPersona()">Actualizar</button>
+                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarCliente()">Guardar</button>
+                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarCliente()">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -233,15 +233,12 @@
                 numero_documento : '',
 
                 id_departamento:0,
-                departamento:'',
                 arrayDepartamentos:[],
 
                 id_provincia:0,
-                provincia:'',
                 arrayProvincia:[],
                 
                 id_distrito:0,
-                distrito:'',
                 arrayDistrito:[],
 
                 direccion:'',
@@ -249,7 +246,7 @@
                 celular:'',
                 email : '',
                 nombre_empresa:'',
-                movito_hospedaje:'',
+                motivo_hospedaje:'',
                 arrayPersona : [],
                 modal : 0,
                 tituloModal : '',
@@ -335,7 +332,6 @@
                 let me=this;
                 var url='/provincia/SelectProvincia'
                 axios.get(url,{params:{id_departamento:this.id_departamento}}).then(function (response) {
-                    console.log(response);
                     var respuesta= response.data;
                     me.arrayProvincia = respuesta.provincias;
                 })
@@ -357,41 +353,54 @@
                 });
             },
 
-            registrarPersona(){
+            registrarCliente(){
                 // if (this.validarPersona()){
                 //     return;
                 // }
-                
+                console.log('Estoy dentro del metodo registrar');
                 let me = this;
 
                 axios.post('/cliente/registrar',{
-                    'nombre': this.nombre,
-                    'tipo_documento': this.tipo_documento,
-                    'num_documento' : this.num_documento,
+                    'id_departamento': this.id_departamento,
+                    'id_provincia': this.id_provincia,
+                    'id_distrito' : this.id_distrito,
+                    'apellidos_nombre' : this.apellidos_nombre,
+                    'tipo_documento' : this.tipo_documento,
+                    'numero_documento' : this.numero_documento,
                     'direccion' : this.direccion,
-                    'telefono' : this.telefono,
-                    'email' : this.email
+                    'sexo' : this.sexo,
+                    'celular':this.celular,
+                    'email':this.email,
+                    'nombre_empresa':this.nombre_empresa,
+                    'motivo_hospedaje':this.motivo_hospedaje
                 }).then(function (response) {
+                    console.log(response);
                     me.cerrarModal();
                     me.listarPersona(1,'','nombre');
                 }).catch(function (error) {
                     console.log(error);
                 });
             },
-            actualizarPersona(){
+            actualizarCliente(){
             //    if (this.validarPersona()){
             //         return;
             //     }
                 
                 let me = this;
 
-                axios.put(this.ruta + '/cliente/actualizar',{
-                    'nombre': this.nombre,
-                    'tipo_documento': this.tipo_documento,
-                    'num_documento' : this.num_documento,
+                axios.put('/cliente/actualizar',{
+                   'id_departamento': this.id_departamento,
+                    'id_provincia': this.id_provincia,
+                    'id_distrito' : this.id_distrito,
+                    'apellidos_nombre' : this.apellidos_nombre,
+                    'tipo_documento' : this.tipo_documento,
+                    'numero_documento' : this.numero_documento,
                     'direccion' : this.direccion,
-                    'telefono' : this.telefono,
-                    'email' : this.email,
+                    'sexo' : this.sexo,
+                    'celular':this.celular,
+                    'email':this.email,
+                    'nombre_empresa':this.nombre_empresa,
+                    'motivo_hospedaje':this.motivo_hospedaje,
                     'id': this.persona_id
                 }).then(function (response) {
                     me.cerrarModal();
@@ -445,7 +454,7 @@
                                 this.celular='';
                                 this.email='';
                                 this.nombre_empresa='';
-                                this.movito_hospedaje='';
+                                this.motivo_hospedaje='';
                                 this.tipoAccion = 1;
                                 break;
                             }
@@ -466,7 +475,8 @@
                                 this.celular=data['celular'];
                                 this.email=data['email'];
                                 this.nombre_empresa=data['nombre_empresa'];
-                                this.movito_hospedaje=data['motivo_hospedaje'];
+                                this.motivo_hospedaje=data['motivo_hospedaje'];
+                                this.persona_id=data['id'];
                                 break;
                             
                             }

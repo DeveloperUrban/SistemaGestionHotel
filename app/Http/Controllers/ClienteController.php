@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Persona;
+use App\Cliente;
 
 class ClienteController extends Controller
 {
@@ -56,19 +58,69 @@ class ClienteController extends Controller
      }
 
      public function store(Request $request){
-        $personas = new Cliente();
-        $personas->id = $request->id;
-        $personas->apellidos_nombre=$request->apellidos_nombre;
-        $personas->tipo_documento=$request->tipo_documento;
-        $personas->departamento=$request->departamento;
-        $personas->provincias=$request->provincias;
-        $personas->distrito=$request->distrito;
-        $personas->sexo=$request->sexo;
-        $personas->celular=$request->celular;
-        $personas->email=$request->email;
-        $personas->ruc=$request->ruc;
-        $personas->nombre_empresa=$request->nombre_empresa;
-        $personas->motivo_hospedaje=$request->motivo_hospedaje;
-        $personas->save();
+
+        // if(!$request->ajax()) return redirect('/');
+        try {
+            DB::beginTransaction();
+            $persona = new Persona();
+            $persona->id_departamento=$request->id_departamento;
+            $persona->id_provincia=$request->id_provincia;
+            $persona->id_distrito=$request->id_distrito;
+            $persona->apellidos_nombre=$request->apellidos_nombre;
+            $persona->tipo_documento=$request->tipo_documento;
+            $persona->numero_documento=$request->numero_documento;
+            $persona->direccion=$request->direccion;
+            $persona->sexo=$request->sexo;
+            $persona->celular=$request->celular;
+            $persona->email=$request->email;
+            $persona->save();
+
+            $cliente = new Cliente();
+            $cliente->nombre_empresa=$request->nombre_empresa;
+            $cliente->motivo_hospedaje=$request->motivo_hospedaje;
+            $cliente->id=$persona->id;
+            $cliente->save();
+
+            DB::commit();
+
+        } catch (Throwable $th) {
+            DB::rollBack();
+        }
+      
+        
+     }
+
+     public function update(Request $request){
+        // if(!$request->ajax()) return redirect('/');
+        try {
+            DB::beginTransaction();
+
+            //Buscar primero el cliente a modificar
+            $cliente = Cliente::findOrFail($request->id);
+
+            $persona = Persona::findOrFail($cliente->id);
+            $persona->id_departamento=$request->id_departamento;
+            $persona->id_provincia=$request->id_provincia;
+            $persona->id_distrito=$request->id_distrito;
+            $persona->apellidos_nombre=$request->apellidos_nombre;
+            $persona->tipo_documento=$request->tipo_documento;
+            $persona->numero_documento=$request->numero_documento;
+            $persona->direccion=$request->direccion;
+            $persona->sexo=$request->sexo;
+            $persona->celular=$request->celular;
+            $persona->email=$request->email;
+            $persona->save();
+
+            $cliente->nombre_empresa=$request->nombre_empresa;
+            $cliente->motivo_hospedaje=$request->motivo_hospedaje;
+            $cliente->id=$persona->id;
+            $cliente->save();
+            
+            DB::commit();
+            
+
+        } catch (Throwable $th) {
+            DB::rollBack();
+        }
      }
 }

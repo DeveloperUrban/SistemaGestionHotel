@@ -60829,15 +60829,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             numero_documento: '',
 
             id_departamento: 0,
-            departamento: '',
             arrayDepartamentos: [],
 
             id_provincia: 0,
-            provincia: '',
             arrayProvincia: [],
 
             id_distrito: 0,
-            distrito: '',
             arrayDistrito: [],
 
             direccion: '',
@@ -60845,7 +60842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             celular: '',
             email: '',
             nombre_empresa: '',
-            movito_hospedaje: '',
+            motivo_hospedaje: '',
             arrayPersona: [],
             modal: 0,
             tituloModal: '',
@@ -60928,7 +60925,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var me = this;
             var url = '/provincia/SelectProvincia';
             axios.get(url, { params: { id_departamento: this.id_departamento } }).then(function (response) {
-                console.log(response);
                 var respuesta = response.data;
                 me.arrayProvincia = respuesta.provincias;
             }).catch(function (error) {
@@ -60946,41 +60942,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        registrarPersona: function registrarPersona() {
+        registrarCliente: function registrarCliente() {
             // if (this.validarPersona()){
             //     return;
             // }
-
+            console.log('Estoy dentro del metodo registrar');
             var me = this;
 
             axios.post('/cliente/registrar', {
-                'nombre': this.nombre,
+                'id_departamento': this.id_departamento,
+                'id_provincia': this.id_provincia,
+                'id_distrito': this.id_distrito,
+                'apellidos_nombre': this.apellidos_nombre,
                 'tipo_documento': this.tipo_documento,
-                'num_documento': this.num_documento,
+                'numero_documento': this.numero_documento,
                 'direccion': this.direccion,
-                'telefono': this.telefono,
-                'email': this.email
+                'sexo': this.sexo,
+                'celular': this.celular,
+                'email': this.email,
+                'nombre_empresa': this.nombre_empresa,
+                'motivo_hospedaje': this.motivo_hospedaje
             }).then(function (response) {
+                console.log(response);
                 me.cerrarModal();
                 me.listarPersona(1, '', 'nombre');
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        actualizarPersona: function actualizarPersona() {
+        actualizarCliente: function actualizarCliente() {
             //    if (this.validarPersona()){
             //         return;
             //     }
 
             var me = this;
 
-            axios.put(this.ruta + '/cliente/actualizar', {
-                'nombre': this.nombre,
+            axios.put('/cliente/actualizar', {
+                'id_departamento': this.id_departamento,
+                'id_provincia': this.id_provincia,
+                'id_distrito': this.id_distrito,
+                'apellidos_nombre': this.apellidos_nombre,
                 'tipo_documento': this.tipo_documento,
-                'num_documento': this.num_documento,
+                'numero_documento': this.numero_documento,
                 'direccion': this.direccion,
-                'telefono': this.telefono,
+                'sexo': this.sexo,
+                'celular': this.celular,
                 'email': this.email,
+                'nombre_empresa': this.nombre_empresa,
+                'motivo_hospedaje': this.motivo_hospedaje,
                 'id': this.persona_id
             }).then(function (response) {
                 me.cerrarModal();
@@ -61035,7 +61044,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.celular = '';
                                     this.email = '';
                                     this.nombre_empresa = '';
-                                    this.movito_hospedaje = '';
+                                    this.motivo_hospedaje = '';
                                     this.tipoAccion = 1;
                                     break;
                                 }
@@ -61056,7 +61065,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     this.celular = data['celular'];
                                     this.email = data['email'];
                                     this.nombre_empresa = data['nombre_empresa'];
-                                    this.movito_hospedaje = data['motivo_hospedaje'];
+                                    this.motivo_hospedaje = data['motivo_hospedaje'];
+                                    this.persona_id = data['id'];
                                     break;
                                 }
                         }
@@ -61452,9 +61462,11 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
+                              staticStyle: { "text-transform": "uppercase" },
                               attrs: {
                                 type: "text",
-                                placeholder: "Apellidos y nombres"
+                                placeholder: "Apellidos y nombres",
+                                required: ""
                               },
                               domProps: { value: _vm.apellidos_nombre },
                               on: {
@@ -61981,13 +61993,13 @@ var render = function() {
                               [_vm._v("Motivo Hospedaje(*)")]
                             ),
                             _vm._v(" "),
-                            _c("textarea", {
+                            _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.movito_hospedaje,
-                                  expression: "movito_hospedaje"
+                                  value: _vm.motivo_hospedaje,
+                                  expression: "motivo_hospedaje"
                                 }
                               ],
                               staticClass: "form-control",
@@ -61995,13 +62007,13 @@ var render = function() {
                                 type: "text",
                                 placeholder: "Motivo Hospedaje"
                               },
-                              domProps: { value: _vm.movito_hospedaje },
+                              domProps: { value: _vm.motivo_hospedaje },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
-                                  _vm.movito_hospedaje = $event.target.value
+                                  _vm.motivo_hospedaje = $event.target.value
                                 }
                               }
                             })
@@ -62036,7 +62048,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.registrarPersona()
+                            return _vm.registrarCliente()
                           }
                         }
                       },
@@ -62052,7 +62064,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.actualizarPersona()
+                            return _vm.actualizarCliente()
                           }
                         }
                       },
