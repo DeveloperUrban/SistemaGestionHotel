@@ -1330,7 +1330,14 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   height: calc(2.3125rem + 2px); }
 
 .form-group {
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem; 
+  border-radius: 5px;
+ 
+  }
+
+.espacio-arriba{
+  padding-top: 15px;
+}
 
 .form-text {
   display: block;
@@ -3957,6 +3964,7 @@ a.bg-dark:focus, a.bg-dark:hover {
 
 .border-white {
   border-color: #fff !important; }
+
 
 .rounded {
   border-radius: 0.25rem !important; }

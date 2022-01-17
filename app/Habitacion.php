@@ -20,5 +20,9 @@ class Habitacion extends Model
         return $this->belongsTo('App\TipoHabitacion');
     }
 
+    public function Recepcion()
+    {
+        return $this->hasMany('App\Recepcion');
+    }
 
 }

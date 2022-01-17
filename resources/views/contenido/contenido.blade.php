@@ -6,7 +6,7 @@
 </template>
 
 <template v-if="menu==1">
-  <h1>Vista Recepcion</h1>
+  <recepcion></recepcion>
 </template>
 
 <template v-if="menu==2">

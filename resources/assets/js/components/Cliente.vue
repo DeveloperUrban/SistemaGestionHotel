@@ -19,9 +19,9 @@
                                 <div class="input-group">
                                     <select class="form-control col-md-3" v-model="criterio">
                                       <option value="apellidos_nombre">Nombre</option>
-                                      <option value="num_documento">Documento</option>
-                                      <option value="email">Email</option>
-                                      <option value="telefono">Teléfono</option>
+                                      <option value="numero_documento">Documento</option>
+                                      <!-- <option value="email">Email</option>
+                                      <option value="telefono">Teléfono</option> -->
                                     </select>
                                     <input type="text" v-model="buscar" @keyup.enter="listarPersona(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                     <button type="submit" @click="listarPersona(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -103,7 +103,7 @@
                                      <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Apellidos y Nombres(*)</label>
-                                            <input type="text" v-model="apellidos_nombre" style="text-transform:uppercase;" class="form-control" placeholder="Apellidos y nombres" required>
+                                            <input type="text" v-model="apellidos_nombre" style="text-transform:uppercase;" class="form-control" placeholder="Apellidos y nombres">
                                         </div>
                                     </div>
 
@@ -376,7 +376,7 @@
                 }).then(function (response) {
                     console.log(response);
                     me.cerrarModal();
-                    me.listarPersona(1,'','nombre');
+                    me.listarPersona(1,'','apellidos_nombre');
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -404,7 +404,7 @@
                     'id': this.persona_id
                 }).then(function (response) {
                     me.cerrarModal();
-                    me.listarPersona(1,'','nombre');
+                    me.listarPersona(1,'','apellios_nombre');
                 }).catch(function (error) {
                     console.log(error);
                 }); 

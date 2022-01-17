@@ -12,4 +12,9 @@ class Persona extends Model
     public function cliente(){
         return $this->hasOne('App\Cliente');
     }
+
+    public function Recepcion()
+    {
+        return $this->hasMany('App\Recepcion');
+    }
 }
