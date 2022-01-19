@@ -98,36 +98,41 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                         <div class="col-md-12 espacio-arriba">
-                                            <h5>Detalle Habibacion</h5>
+                                            <h5>Detalle Habitacion</h5>
                                         </div>
                                     </div>
                                     </div>
                                
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-md-6 form-control-label" for="text-input">Numero(*)</label>
-                                            <input type="text" v-model="numero_documento" class="form-control" placeholder="Numero Habitacion">
+                                             <label class="col-md-6 form-control-label" for="text-input">Numero(*)</label>
+                                             <div class="input-group">
+                                                <input type="text" v-model="numero" class="form-control" id="txtdocumento" placeholder="Numero Habitacion">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary" id="btnbuscar" type="button" @click="abrirModal()">Buscar</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Detalle(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="text" v-model="detalle"  class="form-control" placeholder="Detalle Habitacion" disabled>
                                         </div>
                                     </div>
 
                                      <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Categoria(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Categoria Habitacion">
+                                            <input type="text" v-model="nombre_tipohabitacion" class="form-control" placeholder="Categoria Habitacion" disabled>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Piso(*)</label>
-                                            <input  type="text" v-model="motivo_hospedaje" class="form-control" placeholder="Piso Habitacion">
+                                            <input  type="text" v-model="nombre_piso" class="form-control" placeholder="Piso Habitacion" disabled>
                                         </div>
                                     </div>
 
@@ -144,25 +149,37 @@
                                               <h5>Datos Cliente</h5>
                                             </div>
                                         </div>
+
+                                       <div class="form-group">
+                                        <label for="">Cliente(*)</label>
+                                        <v-select
+                                            @search="selectCliente"
+                                            label="apellidos_nombre"
+                                            :options="arrayCliente"
+                                            placeholder="Buscar Clientes..."
+                                            @input="getDatosCliente"                                        
+                                        >
+                                         </v-select>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Numero Documento(*)</label>
-                                            <input type="text" v-model="numero_documento" class="form-control" placeholder="Numero Habitacion">
+                                            <input type="text" class="form-control" placeholder="Numero Documento" disabled>
                                         </div>
                                         
-
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Tipo Documento(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                             <select class="form-control" v-model="tipo_comprobante" disabled>
+                                                <option value="0">Seleccione</option>
+                                                <option value="DNI">DNI</option>
+                                                <option value="RUC">RUC</option>
+                                                <option value="PASAPORTE">PASAPORTE</option>
+                                              </select>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-6 form-control-label" for="text-input">Apellidos y Nombres(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
-                                        </div>
-
+                                     
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Correo(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="text"  class="form-control" placeholder="Ejemplo@ejemplo.com" disabled>
                                         </div>
                                     </div>
 
@@ -175,198 +192,54 @@
 
                                         <div class="form-group col-sm-6">
                                             <label class=" form-control-label" for="text-input">Fecha Entrada(*)</label>
-                                            <input type="date" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="date"  class="form-control" placeholder="Detalle Habitacion">
                                         </div>
                                         <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">Fecha Salida(*)</label>
-                                            <input type="date" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="date"  class="form-control" placeholder="Detalle Habitacion">
                                         </div>
 
                                         <div class="form-group col-sm-6">
-                                            <label class=" form-control-label" for="text-input">Fecha Entrada(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <label class=" form-control-label" for="text-input">Precio(*)</label>
+                                            <input type="text" v-model="precio" class="form-control" placeholder="Precio Habitacion" disabled>
                                         </div>
                                         <div class="form-group col-sm-6">
-                                            <label class="form-control-label" for="text-input">Fecha Salida(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <label class="form-control-label" for="text-input">Tipo Pago(*)</label>
+                                             <select class="form-control" v-model="tipo_comprobante">
+                                                <option value="0">Seleccione</option>
+                                                <option value="EFECTIVO">EFECTIVO</option>
+                                                <option value="TARJETA">TARJETA</option>
+                                              </select>
                                         </div>
 
-                                          <div class="form-group col-sm-6">
-                                            <label class=" form-control-label" for="text-input">Fecha Entrada(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
-                                        </div>
                                         <div class="form-group col-sm-6">
-                                            <label class="form-control-label" for="text-input">Fecha Salida(*)</label>
-                                            <input type="text" v-model="nombre_empresa" class="form-control" placeholder="Detalle Habitacion">
+                                            <label class="form-control-label" for="text-input">Adultos(*)</label>
+                                            <input type="number"  class="form-control" placeholder="0">
                                         </div>
+
+                                        <div class="form-group col-sm-6">
+                                            <label class="form-control-label" for="text-input">Niños(*)</label>
+                                            <input type="number"  class="form-control" placeholder="0">
+                                        </div>
+
+                                         <div class="form-group col-sm-4 end">
+                                          <button @click="cancelarReserva()" class="btn btn-danger form-control btnagregar"><i class="icon-close"></i> Cancelar</button>
+                                         </div>
+
+                                        <div class="form-group col-sm-4 end">
+                                          <button @click="registrarReserva()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i> Registrar</button>
+                                         </div>
                                       
                                     </div>
 
                                     </div>
                         </div>
                  
-
-                        <div class="form-group row border">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label for="">Cliente(*)</label>
-                                    <v-select
-                                        @search="selectCliente"
-                                        label="nombre"
-                                        :options="arrayCliente"
-                                        placeholder="Buscar Clientes..."
-                                        @input="getDatosCliente"                                        
-                                    >
-
-                                    </v-select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="">Impuesto(*)</label>
-                                <input type="text" class="form-control" v-model="impuesto">
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tipo Comprobante(*)</label>
-                                    <select class="form-control" v-model="tipo_comprobante">
-                                        <option value="0">Seleccione</option>
-                                        <option value="BOLETA">Boleta</option>
-                                        <option value="FACTURA">Factura</option>
-                                        <option value="TICKET">Ticket</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Serie Comprobante</label>
-                                    <input type="text" class="form-control" v-model="serie_comprobante" placeholder="000x">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Número Comprobante(*)</label>
-                                    <input type="text" class="form-control" v-model="num_comprobante" placeholder="000xx">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div v-show="errorVenta" class="form-group row div-error">
-                                    <div class="text-center text-error">
-                                        <div v-for="error in errorMostrarMsjVenta" :key="error" v-text="error">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group row border">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Artículo <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
-                                    <div class="form-inline">
-                                        <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese Codigo">
-                                        <button @click="abrirModal()" class="btn btn-primary">...</button>
-                                        <input type="text" readonly class="form-control" v-model="articulo">
-                                    </div>                                    
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Precio <span style="color:red;" v-show="precio==0">(*Ingrese)</span></label>
-                                    <input type="number" value="0" step="any" class="form-control" v-model="precio">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Cantidad <span style="color:red;" v-show="cantidad==0">(*Ingrese)</span></label>
-                                    <input type="number" value="0" class="form-control" v-model="cantidad">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Descuento</label>
-                                    <input type="number" value="0" class="form-control" v-model="descuento">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row border">
-                            <div class="table-responsive col-md-12">
-                                <table class="table table-bordered table-striped table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Opciones</th>
-                                            <th>Artículo</th>
-                                            <th>Precio</th>
-                                            <th>Cantidad</th>
-                                            <th>Descuento</th>
-                                            <th>Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody v-if="arrayDetalle.length">
-                                        <tr v-for="(detalle,index) in arrayDetalle" :key="detalle.id">
-                                            <td>
-                                                <button @click="eliminarDetalle(index)" type="button" class="btn btn-danger btn-sm">
-                                                    <i class="icon-close"></i>
-                                                </button>
-                                            </td>
-                                            <td v-text="detalle.articulo">
-                                            </td>
-                                            <td>
-                                                <input v-model="detalle.precio" type="number" class="form-control">
-                                            </td>
-                                            <td>
-                                                <span style="color:red;" v-show="detalle.cantidad>detalle.stock">Stock: {{detalle.stock}}</span>
-                                                <input v-model="detalle.cantidad" type="number" class="form-control">
-                                            </td>
-                                            <td>
-                                                <span style="color:red;" v-show="detalle.descuento>(detalle.precio*detalle.cantidad)">Descuento superior</span>
-                                                <input v-model="detalle.descuento" type="number" class="form-control">
-                                            </td>
-                                            <td>
-                                                {{detalle.precio*detalle.cantidad-detalle.descuento}}
-                                            </td>
-                                        </tr>
-                                        <tr style="background-color: #CEECF5;">
-                                            <td colspan="5" align="right"><strong>Total Parcial:</strong></td>
-                                            <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
-                                        </tr>
-                                        <tr style="background-color: #CEECF5;">
-                                            <td colspan="5" align="right"><strong>Total Impuesto:</strong></td>
-                                            <td>$ {{totalImpuesto=((total*impuesto)/(1+impuesto)).toFixed(2)}}</td>
-                                        </tr>
-                                        <tr style="background-color: #CEECF5;">
-                                            <td colspan="5" align="right"><strong>Total Neto:</strong></td>
-                                            <td>$ {{total=calcularTotal}}</td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody v-else>
-                                        <tr>
-                                            <td colspan="6">
-                                                NO hay artículos agregados
-                                            </td>
-                                        </tr>
-                                    </tbody>                                    
-                                </table>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
-                                <button type="button" class="btn btn-primary" @click="registrarVenta()">Registrar Venta</button>
-                            </div>
-                        </div>
                     </div>
                     </template>
                     <!-- Fin Detalle-->
                     <!-- Ver ingreso -->
-                    <template v-else-if="listado==2">
+                    <!-- <template v-else-if="listado==2">
                     <div class="card-body">
                         <div class="form-group row border">
                             <div class="col-md-9">
@@ -454,7 +327,7 @@
                             </div>
                         </div>
                     </div>
-                    </template>
+                    </template> -->
                     <!-- fin ver ingreso -->
                 </div>
                 <!-- Fin ejemplo de tabla Listado -->
@@ -473,13 +346,11 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterioA">
-                                        <option value="nombre">Nombre</option>
-                                        <option value="descripcion">Descripción</option>
-                                        <option value="codigo">Código</option>
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="numero">Numero</option>
                                         </select>
-                                        <input type="text" v-model="buscarA" @keyup.enter="listarArticulo(buscarA,criterioA)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarArticulo(buscarA,criterioA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarHabitacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarHabitacion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -488,35 +359,25 @@
                                     <thead>
                                         <tr>
                                             <th>Opciones</th>
-                                            <th>Código</th>
-                                            <th>Nombre</th>
-                                            <th>Categoría</th>
-                                            <th>Precio Venta</th>
-                                            <th>Stock</th>
-                                            <th>Estado</th>
+                                            <th>Numero</th>
+                                            <th>Detalle</th>
+                                            <th>Precio</th>
+                                            <th>Categoria</th>
+                                            <th>Piso</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="articulo in arrayArticulo" :key="articulo.id">
+                                        <tr v-for="habitacion in arrayHabitacion" :key="habitacion.id">
                                             <td>
-                                                <button type="button" @click="agregarDetalleModal(articulo)" class="btn btn-success btn-sm">
+                                                <button type="button" @click="agregarDetalle(habitacion)" class="btn btn-success btn-sm">
                                                 <i class="icon-check"></i>
                                                 </button>
                                             </td>
-                                            <td v-text="articulo.codigo"></td>
-                                            <td v-text="articulo.nombre"></td>
-                                            <td v-text="articulo.nombre_categoria"></td>
-                                            <td v-text="articulo.precio_venta"></td>
-                                            <td v-text="articulo.stock"></td>
-                                            <td>
-                                                <div v-if="articulo.condicion">
-                                                    <span class="badge badge-success">Activo</span>
-                                                </div>
-                                                <div v-else>
-                                                    <span class="badge badge-danger">Desactivado</span>
-                                                </div>
-                                                
-                                            </td>
+                                            <td v-text="habitacion.numero"></td>
+                                            <td v-text="habitacion.detalle"></td>
+                                            <td v-text="habitacion.precio"></td>
+                                            <td v-text="habitacion.nombre_tipohabitacion"></td>
+                                            <td v-text="habitacion.nombre_piso"></td>
                                         </tr>                                
                                     </tbody>
                                 </table>
@@ -543,7 +404,17 @@
         props : ['ruta'],
         data (){
             return {
-                venta_id: 0,
+                recepcion_id: 0,
+                habitacion_id: 0,
+                idpiso : 0,
+                idtipohabitacion:0,
+                nombre_piso : '',
+                nombre_tipohabitacion : '',
+                numero : '',
+                detalle : '',
+                precio : 0,
+                arrayHabitacion : [],
+
                 idcliente:0,
                 cliente:'',
                 tipo_comprobante : 'BOLETA',
@@ -571,7 +442,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'num_comprobante',
+                criterio : 'numero',
                 buscar : '',
                 criterioA:'nombre',
                 buscarA: '',
@@ -624,6 +495,18 @@
             }
         },
         methods : {
+            listarHabitacion (page,buscar,criterio){
+                let me=this;
+                var url='/habitacion?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                axios.get(url).then(function (response) {
+                    var respuesta= response.data;
+                    me.arrayHabitacion = respuesta.habitaciones.data;
+                    me.pagination= respuesta.pagination;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             listarVenta (page,buscar,criterio){
                 let me=this;
                 var url='/venta?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
@@ -644,6 +527,7 @@
                     let respuesta = response.data;
                     q: search
                     me.arrayCliente=respuesta.clientes;
+                    console.log(me.arrayCliente);
                     loading(false)
                 })
                 .catch(function (error) {
@@ -654,6 +538,7 @@
                 let me = this;
                 me.loading = true;
                 me.idcliente = val1.id;
+                console.log(val1);
             },
 
             buscarArticulo(){
@@ -679,9 +564,9 @@
                     console.log(error);
                 });
             },
-            pdfVenta(id){
-                window.open('/venta/pdf/'+ id + ',' + '_blank');
-            },
+            // pdfVenta(id){
+            //     window.open('/venta/pdf/'+ id + ',' + '_blank');
+            // },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la página actual
@@ -702,49 +587,15 @@
                 let me = this;
                 me.arrayDetalle.splice(index, 1);
             },
-            agregarDetalle(){
-                let me=this;
-                if(me.idarticulo==0 || me.cantidad==0 || me.precio==0){
-                }
-                else{
-                    if(me.encuentra(me.idarticulo)){
-                        swal({
-                            type: 'error',
-                            title: 'Error...',
-                            text: 'Ese artículo ya se encuentra agregado!',
-                            })
-                    }
-                    else{
-                       if(me.cantidad>me.stock){
-                           swal({
-                            type: 'error',
-                            title: 'Error...',
-                            text: 'NO hay stock disponible!',
-                            })
-                       } 
-                       else{
-                           me.arrayDetalle.push({
-                                idarticulo: me.idarticulo,
-                                articulo: me.articulo,
-                                cantidad: me.cantidad,
-                                precio: me.precio,
-                                descuento: me.descuento,
-                                stock: me.stock
-                            });
-                            me.codigo="";
-                            me.idarticulo=0;
-                            me.articulo="";
-                            me.cantidad=0;
-                            me.precio=0;
-                            me.descuento=0;
-                            me.stock=0
-                       }
-                    }
-                    
-                }
-
-                
-
+            agregarDetalle(data=[]){
+                    let me = this;
+                    this.habitacion_id=data['id'];
+                    this.nombre_piso=data['nombre_piso'];
+                    this.nombre_tipohabitacion=data['nombre_tipohabitacion'];
+                    this.numero=data['numero'];
+                    this.detalle = data['detalle'];
+                    this.precio=data['precio'];
+                    this.modal=0;
             },
             agregarDetalleModal(data =[]){
                 let me=this;
@@ -843,17 +694,17 @@
                 let me=this;
                 me.listado=0;
 
-                me.idproveedor=0;
-                me.tipo_comprobante='BOLETA';
-                me.serie_comprobante='';
-                me.num_comprobante='';
-                me.impuesto=0.18;
-                me.total=0.0;
-                me.idarticulo=0;
-                me.articulo='';
-                me.cantidad=0;
-                me.precio=0;
-                me.arrayDetalle=[];
+                // me.idproveedor=0;
+                // me.tipo_comprobante='BOLETA';
+                // me.serie_comprobante='';
+                // me.num_comprobante='';
+                // me.impuesto=0.18;
+                // me.total=0.0;
+                // me.idarticulo=0;
+                // me.articulo='';
+                // me.cantidad=0;
+                // me.precio=0;
+                // me.arrayDetalle=[];
             },
             ocultarDetalle(){
                 this.listado=1;
@@ -899,8 +750,9 @@
             }, 
             abrirModal(){               
                 this.arrayArticulo=[];
+                this.listarHabitacion(1,this.buscar,this.criterio);
                 this.modal = 1;
-                this.tituloModal = 'Seleccione uno o varios artículos';
+                this.tituloModal = 'Seleccione Habitacion';
             },
             desactivarVenta(id){
                 Swal.fire({

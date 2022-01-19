@@ -549,7 +549,9 @@ pre {
   width: 100%;
   min-height: 1px;
   padding-right: 15px;
-  padding-left: 15px; }
+  padding-left: 15px; 
+  justify-content: flex-end;
+}
 
 .col {
   -ms-flex-preferred-size: 0;
@@ -699,7 +701,8 @@ pre {
   .col-sm-4 {
     -ms-flex: 0 0 33.33333%;
         flex: 0 0 33.33333%;
-    max-width: 33.33333%; }
+    max-width: 33.33333%; 
+   }
   .col-sm-5 {
     -ms-flex: 0 0 41.66667%;
         flex: 0 0 41.66667%;
@@ -1618,7 +1621,8 @@ fieldset[disabled] a.btn {
 .btn-success {
   color: #fff;
   background-color: #4dbd74;
-  border-color: #4dbd74; }
+  border-color: #4dbd74; 
+  border-radius: 3px;}
   .btn-success:hover {
     color: #fff;
     background-color: #3ea662;
