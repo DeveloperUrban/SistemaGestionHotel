@@ -17,12 +17,14 @@ class CreateRecepcionesTable extends Migration
             $table->increments('id');
             $table->integer('id_habitacion')->unsigned();
             $table->integer('id_cliente')->unsigned();
-            $table->datetime('fecha_hora',0);
             $table->date('fecha_ingreso');
             $table->date('fecha_salida');
+            $table->integer('numero_noches');
+            $table->decimal('total_recepcion',11,2);
+            $table->string('tipo_pago');
             $table->integer('numero_adultos');
             $table->integer('numero_ninos');
-
+            $table->string('estado',20);
             $table->foreign('id_habitacion')->references('id')->on('habitaciones');
             $table->foreign('id_cliente')->references('id')->on('personas');
 

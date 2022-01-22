@@ -24,8 +24,8 @@
                                       <option value="num_comprobante">Número Comprobante</option>
                                       <option value="fecha_hora">Fecha-Hora</option>
                                     </select>
-                                    <input type="text" v-model="buscar" @keyup.enter="listarVenta(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" @click="listarVenta(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" v-model="buscar" @keyup.enter="listarRecepcion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                    <button type="submit" @click="listarRecepcion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -34,41 +34,52 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <!-- <th>Usuario</th> -->
+                                        <th>Documento</th>
                                         <th>Cliente</th>
-                                        <th>Tipo Comprobante</th>
-                                        <th>Serie Comprobante</th>
-                                        <th>Número Comprobante</th>
-                                        <th>Fecha Hora</th>
+                                        <th>N° Habitacion</th>
+                                        <th>Habitacion</th>
+                                        <th>Precio</th>
+                                        <th>N° Noches</th>
                                         <th>Total</th>
-                                        <th>Impuesto</th>
+                                        <th>Tipo Pago</th>
+                                        <th>Fecha Ingreso</th>
+                                        <th>Fecha Salida</th>
+                                        <th>Adultos</th>
+                                        <th>Niños</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="venta in arrayVenta" :key="venta.id">
+                                    <tr v-for="recepcion in arrayRecepcion" :key="recepcion.id">
                                         <td>
-                                            <button type="button" @click="verVenta(venta.id)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="verRecepcion(recepcion.id)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
                                             <!-- <button type="button" @click="pdfVenta(venta.id)" class="btn btn-info btn-sm">
                                             <i class="icon-doc"></i>
                                             </button> &nbsp; -->
-                                            <template v-if="venta.estado=='Registrado'">
-                                                <button type="button" class="btn btn-danger btn-sm" @click="desactivarVenta(venta.id)">
+                                            <template v-if="recepcion.estado=='Registrado'">
+                                                <button type="button" class="btn btn-danger btn-sm" @click="desactivarRecepcion(recepcion.id)">
                                                     <i class="icon-trash"></i>
                                                 </button>
                                             </template>
                                         </td>
                                         <!-- <td v-text="venta.usuario"></td> -->
-                                        <td v-text="venta.nombre"></td>
-                                        <td v-text="venta.tipo_comprobante"></td>
-                                        <td v-text="venta.serie_comprobante"></td>
-                                        <td v-text="venta.num_comprobante"></td>
-                                        <td v-text="venta.fecha_hora"></td>
-                                        <td v-text="venta.total"></td>
-                                        <td v-text="venta.impuesto"></td>
-                                        <td v-text="venta.estado"></td>
+                                        <td v-text="recepcion.numero_documento"></td>
+                                        <td v-text="recepcion.apellidos_nombre"></td>
+                                        <td v-text="recepcion.numero"></td>
+                                        <td v-text="recepcion.detalle"></td>
+                                        <td v-text="recepcion.precio"></td>
+                                        <td v-text="recepcion.numero_noches"></td>
+                                        <td v-text="recepcion.total_recepcion"></td>
+                                        <td v-text="recepcion.tipo_pago"></td>
+                                        <td v-text="recepcion.fecha_ingreso"></td>
+                                        <td v-text="recepcion.fecha_salida"></td>
+                                        <td v-text="recepcion.numero_adultos"></td>
+                                        <td v-text="recepcion.numero_ninos"></td>
+                                        <td v-text="recepcion.estado"></td>
+
+                                     
                                     </tr>                                
                                 </tbody>
                             </table>
@@ -143,7 +154,7 @@
                         <div class="form-group border">
                                    <div class="row col-md">
 
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" >
                                         <div class="form-group">
                                             <div class="col-md-6 espacio-arriba">
                                               <h5>Datos Cliente</h5>
@@ -157,34 +168,29 @@
                                             label="apellidos_nombre"
                                             :options="arrayCliente"
                                             placeholder="Buscar Clientes..."
-                                            @input="getDatosCliente"                                        
+                                            @input="getDatosCliente" 
                                         >
                                          </v-select>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Numero Documento(*)</label>
-                                            <input type="text" class="form-control" placeholder="Numero Documento" disabled>
+                                            <input type="text" v-model="numero_documento" class="form-control" placeholder="Numero Documento" disabled>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Tipo Documento(*)</label>
-                                             <select class="form-control" v-model="tipo_comprobante" disabled>
-                                                <option value="0">Seleccione</option>
-                                                <option value="DNI">DNI</option>
-                                                <option value="RUC">RUC</option>
-                                                <option value="PASAPORTE">PASAPORTE</option>
-                                              </select>
+                                            <input type="text" v-model="tipo_documento" class="form-control" placeholder="Numero Documento" disabled>
                                         </div>
                                      
                                         <div class="form-group">
                                             <label class="col-md-6 form-control-label" for="text-input">Correo(*)</label>
-                                            <input type="text"  class="form-control" placeholder="Ejemplo@ejemplo.com" disabled>
+                                            <input type="text" v-model="email" class="form-control" placeholder="Ejemplo@ejemplo.com" disabled>
                                         </div>
                                     </div>
 
                                     <div class="row col-sm-6">
-                                         <div class="form-group col-sm-12">
+                                        <div class="form-group col-sm-12">
                                             <div class="espacio-arriba">
                                               <h5>Detalle Reservacion</h5>
                                             </div>
@@ -192,47 +198,57 @@
 
                                         <div class="form-group col-sm-6">
                                             <label class=" form-control-label" for="text-input">Fecha Entrada(*)</label>
-                                            <input type="date"  class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="date" v-model="fecha_ingreso" class="form-control" placeholder="Detalle Habitacion">
                                         </div>
                                         <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">Fecha Salida(*)</label>
-                                            <input type="date"  class="form-control" placeholder="Detalle Habitacion">
+                                            <input type="date" v-model="fecha_salida" class="form-control" placeholder="Detalle Habitacion">
                                         </div>
 
                                         <div class="form-group col-sm-6">
                                             <label class=" form-control-label" for="text-input">Precio(*)</label>
                                             <input type="text" v-model="precio" class="form-control" placeholder="Precio Habitacion" disabled>
                                         </div>
+
+                                         <div class="form-group col-sm-6">
+                                            <label class="form-control-label" for="text-input">N° Noches(*)</label>
+                                            <input type="number" v-model="numero_noche" class="form-control" placeholder="0">
+                                        </div>
+
                                         <div class="form-group col-sm-6">
+                                            <label class=" form-control-label" for="text-input">Total(*)</label>
+                                            <input type="text"  v-model="total_recepcion" class="form-control" placeholder="Precio Habitacion" disabled>
+                                        </div>
+
+                                          <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">Tipo Pago(*)</label>
-                                             <select class="form-control" v-model="tipo_comprobante">
-                                                <option value="0">Seleccione</option>
+                                             <select class="form-control" v-model="tipo_pago">
+                                                <option value="">Seleccione</option>
                                                 <option value="EFECTIVO">EFECTIVO</option>
                                                 <option value="TARJETA">TARJETA</option>
                                               </select>
                                         </div>
 
-                                        <div class="form-group col-sm-6">
+                                         <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">Adultos(*)</label>
-                                            <input type="number"  class="form-control" placeholder="0">
+                                            <input type="number" v-model="numero_adultos" class="form-control" placeholder="0">
                                         </div>
 
                                         <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">Niños(*)</label>
-                                            <input type="number"  class="form-control" placeholder="0">
+                                            <input type="number"  v-model="numero_ninos" class="form-control" placeholder="0">
                                         </div>
-
-                                         <div class="form-group col-sm-4 end">
-                                          <button @click="cancelarReserva()" class="btn btn-danger form-control btnagregar"><i class="icon-close"></i> Cancelar</button>
-                                         </div>
-
-                                        <div class="form-group col-sm-4 end">
-                                          <button @click="registrarReserva()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i> Registrar</button>
-                                         </div>
                                       
                                     </div>
 
                                     </div>
+                        </div>
+
+                       <div class="form-group row end">
+                            <div class="col-md-12">
+                                <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
+                                <button type="button" class="btn btn-primary" @click="registrarRecepcion()">Reservar</button>
+                            </div>
                         </div>
                  
                     </div>
@@ -385,8 +401,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarPersona()">Guardar</button>
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarPersona()">Actualizar</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -404,28 +418,34 @@
         props : ['ruta'],
         data (){
             return {
-                recepcion_id: 0,
                 habitacion_id: 0,
-                idpiso : 0,
-                idtipohabitacion:0,
-                nombre_piso : '',
-                nombre_tipohabitacion : '',
-                numero : '',
-                detalle : '',
-                precio : 0,
                 arrayHabitacion : [],
 
                 idcliente:0,
-                cliente:'',
-                tipo_comprobante : 'BOLETA',
-                serie_comprobante : '',
-                num_comprobante : '',
-                impuesto: 0.18,
-                total:0.0,
-                totalImpuesto: 0.0,
-                totalParcial: 0.0,
-                arrayVenta : [],
                 arrayCliente: [],
+
+                recepcion_id:0,
+                apellidos_nombre:'',
+                tipo_documento:'',
+                numero_documento:'',
+                email:'',
+                numero:'',
+                detalle:'',
+                nombre_tipohabitacion:'',
+                nombre_piso:'',
+
+                precio:'',
+                numero_noche:1,
+                total_recepcion:0,
+                tipo_pago:'',
+                fecha_ingreso:'',
+                fecha_salida:'',
+                numero_adultos:0,
+                numero_ninos:0,
+                
+                arrayRecepcion:[],
+
+                
                 arrayDetalle : [],
                 listado:1,
                 modal : 0,
@@ -507,12 +527,12 @@
                     console.log(error);
                 });
             },
-            listarVenta (page,buscar,criterio){
+            listarRecepcion (page,buscar,criterio){
                 let me=this;
-                var url='/venta?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url='/recepcion?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayVenta = respuesta.ventas.data;
+                    me.arrayRecepcion = respuesta.recepciones.data;
                     me.pagination= respuesta.pagination;
                 })
                 .catch(function (error) {
@@ -527,7 +547,6 @@
                     let respuesta = response.data;
                     q: search
                     me.arrayCliente=respuesta.clientes;
-                    console.log(me.arrayCliente);
                     loading(false)
                 })
                 .catch(function (error) {
@@ -538,7 +557,9 @@
                 let me = this;
                 me.loading = true;
                 me.idcliente = val1.id;
-                console.log(val1);
+                me.numero_documento=val1.numero_documento;
+                me.tipo_documento=val1.tipo_documento;
+                me.email=val1.email;
             },
 
             buscarArticulo(){
@@ -782,9 +803,12 @@
                    }
                 })
             },
+         
         },
-        mounted() {
-            this.listarVenta(1,this.buscar,this.criterio);
+      
+        mounted(){
+     
+         this.listarRecepcion(1,this.buscar,this.criterio);
         }
     }
 </script>

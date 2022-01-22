@@ -74,3 +74,10 @@ Route::get('/cliente/selectCliente','ClienteController@selectCliente');
 Route::get('/departamento/selectDepartamento', 'UbigeController@selectDepartamento');
 Route::get('/provincia/SelectProvincia', 'UbigeController@SelectProvincia');
 Route::get('/distrito/SelectDistrito', 'UbigeController@SelectDistrito');
+
+//Las rutas de la tabla recepciones
+Route::get('/recepcion', 'RecepcionController@index');
+Route::post('/recepcion/registrar', 'RecepcionController@store');
+Route::put('/recepcion/actualizar','RecepcionController@update');
+Route::put('/recepcion/desactivar','RecepcionController@desactivar');
+Route::put('/recepcion/activar','RecepcionController@activar');
