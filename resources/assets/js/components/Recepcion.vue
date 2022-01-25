@@ -212,12 +212,12 @@
 
                                          <div class="form-group col-sm-6">
                                             <label class="form-control-label" for="text-input">N° Noches(*)</label>
-                                            <input type="number" v-model="numero_noche" class="form-control" placeholder="0">
+                                            <input type="number" v-model="numero_noches" class="form-control" placeholder="0">
                                         </div>
 
                                         <div class="form-group col-sm-6">
-                                            <label class=" form-control-label" for="text-input">Total(*)</label>
-                                            <input type="text"  v-model="total_recepcion" class="form-control" placeholder="Precio Habitacion" disabled>
+                                            <label class=" form-control-label" for="text-input">Total a Pagar(*)</label>
+                                            <span v-text="total_recepcion=precio*numero_noches" class="form-control" style="background-color:#c2cfd6;"></span>
                                         </div>
 
                                           <div class="form-group col-sm-6">
@@ -418,10 +418,10 @@
         props : ['ruta'],
         data (){
             return {
-                habitacion_id: 0,
+                id_habitacion: 0,
                 arrayHabitacion : [],
 
-                idcliente:0,
+                id_cliente:0,
                 arrayCliente: [],
 
                 recepcion_id:0,
@@ -435,7 +435,7 @@
                 nombre_piso:'',
 
                 precio:'',
-                numero_noche:1,
+                numero_noches:1,
                 total_recepcion:0,
                 tipo_pago:'',
                 fecha_ingreso:'',
@@ -506,13 +506,6 @@
                 }
                 return pagesArray;
             },
-            calcularTotal: function(){
-                var resultado=0.0;
-                for(var i=0;i<this.arrayDetalle.length;i++){
-                    resultado=resultado+(this.arrayDetalle[i].precio*this.arrayDetalle[i].cantidad-this.arrayDetalle[i].descuento)
-                }
-                return resultado;
-            }
         },
         methods : {
             listarHabitacion (page,buscar,criterio){
@@ -556,34 +549,10 @@
             getDatosCliente(val1){
                 let me = this;
                 me.loading = true;
-                me.idcliente = val1.id;
+                me.id_cliente = val1.id;
                 me.numero_documento=val1.numero_documento;
                 me.tipo_documento=val1.tipo_documento;
                 me.email=val1.email;
-            },
-
-            buscarArticulo(){
-                let me=this;
-                var url='/articulo/buscarArticuloVenta?filtro=' + me.codigo;
-
-                axios.get(url).then(function (response) {
-                    var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos;
-
-                    if (me.arrayArticulo.length>0){
-                        me.articulo=me.arrayArticulo[0]['nombre'];
-                        me.idarticulo=me.arrayArticulo[0]['id'];
-                        me.precio=me.arrayArticulo[0]['precio_venta'];
-                        me.stock=me.arrayArticulo[0]['stock'];
-                    }
-                    else{
-                        me.articulo='No existe artículo';
-                        me.idarticulo=0;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             // pdfVenta(id){
             //     window.open('/venta/pdf/'+ id + ',' + '_blank');
@@ -593,24 +562,12 @@
                 //Actualiza la página actual
                 me.pagination.current_page = page;
                 //Envia la petición para visualizar la data de esa página
-                me.listarVenta(page,buscar,criterio);
+                me.listarRecepcion(page,buscar,criterio);
             },
-            encuentra(id){
-                var sw=0;
-                for(var i=0;i<this.arrayDetalle.length;i++){
-                    if(this.arrayDetalle[i].idarticulo==id){
-                        sw=true;
-                    }
-                }
-                return sw;
-            },
-            eliminarDetalle(index){
-                let me = this;
-                me.arrayDetalle.splice(index, 1);
-            },
+
             agregarDetalle(data=[]){
                     let me = this;
-                    this.habitacion_id=data['id'];
+                    this.id_habitacion=data['id'];
                     this.nombre_piso=data['nombre_piso'];
                     this.nombre_tipohabitacion=data['nombre_tipohabitacion'];
                     this.numero=data['numero'];
@@ -618,72 +575,27 @@
                     this.precio=data['precio'];
                     this.modal=0;
             },
-            agregarDetalleModal(data =[]){
-                let me=this;
-                if(me.encuentra(data['id'])){
-                        swal({
-                            type: 'error',
-                            title: 'Error...',
-                            text: 'Ese artículo ya se encuentra agregado!',
-                            })
-                    }
-                    else{
-                       me.arrayDetalle.push({
-                            idarticulo: data['id'],
-                            articulo: data['nombre'],
-                            cantidad: 1,
-                            precio: data['precio_venta'],
-                            descuento:0,
-                            stock:data['stock']
-                        }); 
-                    }
-            },
-            listarArticulo (buscar,criterio){
-                let me=this;
-                var url='/articulo/listarArticuloVenta?buscar='+ buscar + '&criterio='+ criterio;
-                axios.get(url).then(function (response) {
-                    var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            registrarVenta(){
-                if (this.validarVenta()){
-                    return;
-                }
+   
+            registrarRecepcion(){
+                // if (this.validarVenta()){
+                //     return;
+                // }
                 
                 let me = this;
 
-                axios.post('/venta/registrar',{
-                    'idcliente': this.idcliente,
-                    'tipo_comprobante': this.tipo_comprobante,
-                    'serie_comprobante' : this.serie_comprobante,
-                    'num_comprobante' : this.num_comprobante,
-                    'impuesto' : this.impuesto,
-                    'total' : this.total,
-                    'data': this.arrayDetalle
-
+                axios.post('/recepcion/registrar',{
+                    'id_habitacion': this.id_habitacion,
+                    'id_cliente': this.id_cliente,
+                    'fecha_ingreso' : this.fecha_ingreso,
+                    'fecha_salida' : this.fecha_salida,
+                    'numero_noches' : this.numero_noches,
+                    'total_recepcion' : this.total_recepcion,
+                    'tipo_pago' : this.tipo_pago,
+                    'numero_adultos': this.numero_adultos,
+                    'numero_ninos' : this.numero_ninos
                 }).then(function (response) {
                     me.listado=1;
-                    me.listarVenta(1,'','num_comprobante');
-                    me.idcliente=0;
-                    me.tipo_comprobante='BOLETA';
-                    me.serie_comprobante='';
-                    me.num_comprobante='';
-                    me.impuesto=0.18;
-                    me.total=0.0;
-                    me.idarticulo=0;
-                    me.articulo='';
-                    me.cantidad=0;
-                    me.precio=0;
-                    me.stock=0;
-                    me.codigo='';
-                    me.descuento=0;
-                    me.arrayDetalle=[];
-                    // window.open('/venta/pdf/'+ response.data.id + ',' + '_blank');
-
+                    me.listarRecepcion(1,'','numero_documento');
                 }).catch(function (error) {
                     console.log(error);
                 });

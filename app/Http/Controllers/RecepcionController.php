@@ -53,14 +53,19 @@ class RecepcionController extends Controller
  
      public function store(Request $request){
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = new Habitacion();
-         $habitacion->idpiso = $request->idpiso;
-         $habitacion->idtipohabitacion = $request->idtipohabitacion;
-         $habitacion->numero = $request->numero;
-         $habitacion->detalle = $request->detalle;
-         $habitacion->precio = $request->precio;
-         $habitacion->estado = '1';
-         $habitacion->save();
+         $recepcion = new Recepcion();
+         $recepcion->id_habitacion=$request->id_habitacion;
+         $recepcion->id_cliente=$request->id_cliente;
+         $recepcion->fecha_ingreso=$request->fecha_ingreso;
+         $recepcion->fecha_salida=$request->fecha_salida;
+         $recepcion->numero_noches=$request->numero_noches;
+         $recepcion->total_recepcion=$request->total_recepcion;
+         $recepcion->tipo_pago=$request->tipo_pago;
+         $recepcion->numero_adultos=$request->numero_adultos;
+         $recepcion->numero_ninos=$request->numero_ninos;
+         $recepcion->estado='Registrado';
+
+         $recepcion->save();
      }
  
      public function update(Request $request)
