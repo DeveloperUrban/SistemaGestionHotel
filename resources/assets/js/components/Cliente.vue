@@ -374,7 +374,6 @@
                     'nombre_empresa':this.nombre_empresa,
                     'motivo_hospedaje':this.motivo_hospedaje
                 }).then(function (response) {
-                    console.log(response);
                     me.cerrarModal();
                     me.listarPersona(1,'','apellidos_nombre');
                 }).catch(function (error) {
@@ -460,7 +459,6 @@
                             }
                             case 'actualizar':
                             {
-                                console.log(data);
                                 this.modal=1;
                                 this.tituloModal='Actualizar Cliente';
                                 this.tipoAccion=2;

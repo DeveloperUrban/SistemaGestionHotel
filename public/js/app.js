@@ -60964,7 +60964,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'nombre_empresa': this.nombre_empresa,
                 'motivo_hospedaje': this.motivo_hospedaje
             }).then(function (response) {
-                console.log(response);
                 me.cerrarModal();
                 me.listarPersona(1, '', 'apellidos_nombre');
             }).catch(function (error) {
@@ -61051,7 +61050,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 }
                             case 'actualizar':
                                 {
-                                    console.log(data);
                                     this.modal = 1;
                                     this.tituloModal = 'Actualizar Cliente';
                                     this.tipoAccion = 2;
@@ -62588,54 +62586,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -62690,8 +62640,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             offset: 3,
             criterio: 'numero',
             buscar: '',
-            criterioA: 'nombre',
+            criterioA: 'numero_documento',
             buscarA: '',
+
             arrayArticulo: [],
             idarticulo: 0,
             codigo: '',
@@ -62742,9 +62693,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 console.log(error);
             });
         },
-        listarRecepcion: function listarRecepcion(page, buscar, criterio) {
+        listarRecepcion: function listarRecepcion(page, buscarA, criterioA) {
             var me = this;
-            var url = '/recepcion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+            var url = '/recepcion?page=' + page + '&buscar=' + buscarA + '&criterio=' + criterioA;
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
                 me.arrayRecepcion = respuesta.recepciones.data;
@@ -62863,35 +62814,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         ocultarDetalle: function ocultarDetalle() {
             this.listado = 1;
         },
-        verVenta: function verVenta(id) {
+        verRecepcion: function verRecepcion(id) {
             var me = this;
             me.listado = 2;
 
             //Obtener los datos del ingreso
-            var arrayVentaT = [];
-            var url = '/venta/obtenerCabecera?id=' + id;
-
+            var arrayRecepcionT = [];
+            var url = '/recepcion/obtenerRecepcion?id=' + id;
+            console.log(url);
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
-                arrayVentaT = respuesta.venta;
+                arrayRecepcionT = respuesta.recepciones;
 
-                me.cliente = arrayVentaT[0]['nombre'];
-                me.tipo_comprobante = arrayVentaT[0]['tipo_comprobante'];
-                me.serie_comprobante = arrayVentaT[0]['serie_comprobante'];
-                me.num_comprobante = arrayVentaT[0]['num_comprobante'];
-                me.impuesto = arrayVentaT[0]['impuesto'];
-                me.total = arrayVentaT[0]['total'];
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-            //Obtener los datos de los detalles 
-            var urld = '/venta/obtenerDetalles?id=' + id;
-
-            axios.get(urld).then(function (response) {
-                console.log(response);
-                var respuesta = response.data;
-                me.arrayDetalle = respuesta.detalles;
+                me.apellidos_nombre = arrayRecepcionT[0]['apellidos_nombre'];
+                me.numero_documento = arrayRecepcionT[0]['numero_documento'];
+                me.numero = arrayRecepcionT[0]['numero'];
+                me.detalle = arrayRecepcionT[0]['detalle'];
+                me.precio = arrayRecepcionT[0]['precio'];
+                me.numero_noches = arrayRecepcionT[0]['numero_noches'];
+                me.total_recepcion = arrayRecepcionT[0]['total_recepcion'];
+                me.tipo_pago = arrayRecepcionT[0]['tipo_pago'];
+                me.fecha_ingreso = arrayRecepcionT[0]['fecha_ingreso'];
+                me.fecha_salida = arrayRecepcionT[0]['fecha_salida'];
+                me.numero_adultos = arrayRecepcionT[0]['numero_adultos'];
+                me.numero_ninos = arrayRecepcionT[0]['numero_ninos'];
             }).catch(function (error) {
                 console.log(error);
             });
@@ -63495,8 +63441,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.criterio,
-                                expression: "criterio"
+                                value: _vm.criterioA,
+                                expression: "criterioA"
                               }
                             ],
                             staticClass: "form-control col-md-3",
@@ -63510,7 +63456,7 @@ var render = function() {
                                     var val = "_value" in o ? o._value : o.value
                                     return val
                                   })
-                                _vm.criterio = $event.target.multiple
+                                _vm.criterioA = $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
                               }
@@ -63519,19 +63465,9 @@ var render = function() {
                           [
                             _c(
                               "option",
-                              { attrs: { value: "tipo_comprobante" } },
-                              [_vm._v("Tipo Comprobante")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "option",
-                              { attrs: { value: "num_comprobante" } },
-                              [_vm._v("Número Comprobante")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "fecha_hora" } }, [
-                              _vm._v("Fecha-Hora")
-                            ])
+                              { attrs: { value: "numero_documento" } },
+                              [_vm._v("Número Documento")]
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -63567,7 +63503,7 @@ var render = function() {
                               return _vm.listarRecepcion(
                                 1,
                                 _vm.buscar,
-                                _vm.criterio
+                                _vm.criterioA
                               )
                             },
                             input: function($event) {
@@ -63589,7 +63525,7 @@ var render = function() {
                                 return _vm.listarRecepcion(
                                   1,
                                   _vm.buscar,
-                                  _vm.criterio
+                                  _vm.criterioA
                                 )
                               }
                             }
@@ -64480,6 +64416,58 @@ var render = function() {
                           }
                         },
                         [_vm._v("Reservar")]
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            : _vm.listado == 2
+            ? [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "form-group row border" }, [
+                    _c("div", { staticClass: "col-md-9" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { attrs: { for: "" } }, [_vm._v("Numero")]),
+                        _vm._v(" "),
+                        _c("p", {
+                          domProps: { textContent: _vm._s(_vm.numero) }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-3" }, [
+                      _c("label", { attrs: { for: "" } }, [_vm._v("Detalle")]),
+                      _vm._v(" "),
+                      _c("p", {
+                        domProps: { textContent: _vm._s(_vm.detalle) }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Precio")]),
+                        _vm._v(" "),
+                        _c("p", {
+                          domProps: { textContent: _vm._s(_vm.precio) }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.ocultarDetalle()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
                       )
                     ])
                   ])
