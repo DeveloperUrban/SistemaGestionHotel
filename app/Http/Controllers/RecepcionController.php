@@ -20,7 +20,8 @@ class RecepcionController extends Controller
          {
             $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
             ->join('personas','recepciones.id_cliente','=','personas.id')
-            ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.numero_documento','habitaciones.detalle','habitaciones.precio',
+            ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.numero_documento',
+             'habitaciones.numero','habitaciones.detalle','habitaciones.precio',
              'recepciones.numero_noches','recepciones.total_recepcion','recepciones.tipo_pago','recepciones.fecha_ingreso',
              'recepciones.fecha_salida','recepciones.numero_adultos','recepciones.numero_ninos','recepciones.estado'
              )
@@ -29,7 +30,8 @@ class RecepcionController extends Controller
          else{
             $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
             ->join('personas','recepciones.id_cliente','=','personas.id')
-            ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.numero_documento','habitaciones.detalle','habitaciones.precio',
+            ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.numero_documento',
+             'habitaciones.numero','habitaciones.detalle','habitaciones.precio',
              'recepciones.numero_noches','recepciones.total_recepcion','recepciones.tipo_pago','recepciones.fecha_ingreso',
              'recepciones.fecha_salida','recepciones.numero_adultos','recepciones.numero_ninos','recepciones.estado'
              )
@@ -72,8 +74,12 @@ class RecepcionController extends Controller
         //  if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
+             ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
+             ->join('pisos','habitaciones.idpiso','=','pisos.id')
              ->join('personas','recepciones.id_cliente','=','personas.id')
-             ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.numero_documento','habitaciones.numero','habitaciones.detalle','habitaciones.precio',
+             ->select('recepciones.id','personas.id as persona_id','personas.apellidos_nombre','personas.tipo_documento','personas.numero_documento',
+              'personas.email','personas.celular',
+              'habitaciones.numero','habitaciones.detalle','tipohabitaciones.nombre as categoria','pisos.nombre as piso','habitaciones.precio',
               'recepciones.numero_noches','recepciones.total_recepcion','recepciones.tipo_pago','recepciones.fecha_ingreso',
               'recepciones.fecha_salida','recepciones.numero_adultos','recepciones.numero_ninos','recepciones.estado'
               )
@@ -92,8 +98,8 @@ class RecepcionController extends Controller
      public function desactivar(Request $request)
      {
          //if (!$request->ajax()) return redirect('/');
-         $habitacion = Habitacion::findOrFail($request->id);
-         $habitacion->estado='0';
+         $habitacion = Recepcion::findOrFail($request->id);
+         $habitacion->estado='Anulado';
          $habitacion->save();
      }
 }

@@ -62586,6 +62586,95 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -62606,6 +62695,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             tipo_documento: '',
             numero_documento: '',
             email: '',
+            celular: '',
             numero: '',
             detalle: '',
             nombre_tipohabitacion: '',
@@ -62798,18 +62888,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         mostrarDetalle: function mostrarDetalle() {
             var me = this;
             me.listado = 0;
+            me.recepcion_id = 0;
+            me.apellidos_nombre = '';
+            me.tipo_documento = '';
+            me.numero_documento = '';
+            me.email = '';
+            me.celular = '';
+            me.numero = '';
+            me.detalle = '';
+            me.nombre_tipohabitacion = '';
+            me.nombre_piso = '';
 
-            // me.idproveedor=0;
-            // me.tipo_comprobante='BOLETA';
-            // me.serie_comprobante='';
-            // me.num_comprobante='';
-            // me.impuesto=0.18;
-            // me.total=0.0;
-            // me.idarticulo=0;
-            // me.articulo='';
-            // me.cantidad=0;
-            // me.precio=0;
-            // me.arrayDetalle=[];
+            me.precio = '';
+            me.numero_noches = 0;
+            me.total_recepcion = 0;
+            me.tipo_pago = '';
+            me.fecha_ingreso = '';
+            me.fecha_salida = '';
+            me.numero_adultos = 0;
+            me.numero_ninos = 0;
         },
         ocultarDetalle: function ocultarDetalle() {
             this.listado = 1;
@@ -62827,9 +62924,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 arrayRecepcionT = respuesta.recepciones;
 
                 me.apellidos_nombre = arrayRecepcionT[0]['apellidos_nombre'];
+                me.tipo_documento = arrayRecepcionT[0]['tipo_documento'];
                 me.numero_documento = arrayRecepcionT[0]['numero_documento'];
+                me.email = arrayRecepcionT[0]['email'];
+                me.celular = arrayRecepcionT[0]['celular'];
                 me.numero = arrayRecepcionT[0]['numero'];
                 me.detalle = arrayRecepcionT[0]['detalle'];
+                me.nombre_tipohabitacion = arrayRecepcionT[0]['categoria'];
+                me.nombre_piso = arrayRecepcionT[0]['piso'];
                 me.precio = arrayRecepcionT[0]['precio'];
                 me.numero_noches = arrayRecepcionT[0]['numero_noches'];
                 me.total_recepcion = arrayRecepcionT[0]['total_recepcion'];
@@ -62852,7 +62954,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.modal = 1;
             this.tituloModal = 'Seleccione Habitacion';
         },
-        desactivarVenta: function desactivarVenta(id) {
+        desactivarRecepcion: function desactivarRecepcion(id) {
             var _this = this;
 
             Swal.fire({
@@ -62866,10 +62968,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }).then(function (result) {
                 if (result.isConfirmed) {
                     var me = _this;
-                    axios.put('/venta/desactivar', {
+                    axios.put('/recepcion/desactivar', {
                         'id': id
                     }).then(function (response) {
-                        me.listarVenta(1, '', 'num_comprobante');
+                        me.listarRecepcion(1, '', 'numero_documento');
                         swal('Anulado!', 'La venta ha sido anulada con éxito.', 'success');
                     }).catch(function (error) {
                         console.log(error);
@@ -63649,12 +63751,6 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", {
                                 domProps: {
-                                  textContent: _vm._s(recepcion.tipo_pago)
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("td", {
-                                domProps: {
                                   textContent: _vm._s(recepcion.fecha_ingreso)
                                 }
                               }),
@@ -63662,18 +63758,6 @@ var render = function() {
                               _c("td", {
                                 domProps: {
                                   textContent: _vm._s(recepcion.fecha_salida)
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("td", {
-                                domProps: {
-                                  textContent: _vm._s(recepcion.numero_adultos)
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("td", {
-                                domProps: {
-                                  textContent: _vm._s(recepcion.numero_ninos)
                                 }
                               }),
                               _vm._v(" "),
@@ -64424,34 +64508,341 @@ var render = function() {
             : _vm.listado == 2
             ? [
                 _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "form-group row border" }, [
-                    _c("div", { staticClass: "col-md-9" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "" } }, [_vm._v("Numero")]),
-                        _vm._v(" "),
-                        _c("p", {
-                          domProps: { textContent: _vm._s(_vm.numero) }
-                        })
-                      ])
+                  _c("div", { staticClass: "card border-secondary mb-3" }, [
+                    _c("div", { staticClass: "card-cabecera" }, [
+                      _vm._v("Detalle Habitación")
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-md-3" }, [
-                      _c("label", { attrs: { for: "" } }, [_vm._v("Detalle")]),
-                      _vm._v(" "),
-                      _c("p", {
-                        domProps: { textContent: _vm._s(_vm.detalle) }
-                      })
+                    _c(
+                      "div",
+                      { staticClass: "card-body row align-items-center" },
+                      [
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Numero")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: { textContent: _vm._s(_vm.numero) }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Detalle")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: { textContent: _vm._s(_vm.detalle) }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c(
+                            "label",
+                            { staticClass: "form-text font-weight-bold mb-0" },
+                            [_vm._v("Categoria")]
+                          ),
+                          _vm._v(" "),
+                          _c("p", {
+                            staticClass: "form-text",
+                            domProps: {
+                              textContent: _vm._s(_vm.nombre_tipohabitacion)
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c(
+                            "label",
+                            { staticClass: "form-text font-weight-bold mb-0" },
+                            [_vm._v("Piso")]
+                          ),
+                          _vm._v(" "),
+                          _c("p", {
+                            staticClass: "form-text",
+                            domProps: { textContent: _vm._s(_vm.nombre_piso) }
+                          })
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card border-secondary mb-3" }, [
+                    _c("div", { staticClass: "card-cabecera" }, [
+                      _vm._v("Detalle Cliente")
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Precio")]),
+                    _c(
+                      "div",
+                      { staticClass: "card-body row align-items-center" },
+                      [
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Tipo Documento")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.tipo_documento)
+                              }
+                            })
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("p", {
-                          domProps: { textContent: _vm._s(_vm.precio) }
-                        })
-                      ])
-                    ])
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Numero Documento")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.numero_documento)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-3" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Apellidos y Nombres")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.apellidos_nombre)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-3" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Correo")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: { textContent: _vm._s(_vm.email) }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Celular")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: { textContent: _vm._s(_vm.celular) }
+                            })
+                          ])
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card border-secondary mb-3" }, [
+                    _c("div", { staticClass: "card-cabecera" }, [
+                      _vm._v("Detalle Reservación")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-body row align-items-center" },
+                      [
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Fecha Ingreso")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.fecha_ingreso)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Fecha Salida")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.fecha_salida)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-3" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("N° Adultos")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.numero_adultos)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-3" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("N° Niños")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: {
+                                textContent: _vm._s(_vm.numero_ninos)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Tipo Pago")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-text",
+                              domProps: { textContent: _vm._s(_vm.tipo_pago) }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Precio")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-control",
+                              domProps: { textContent: _vm._s(_vm.precio) }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("N° Noches")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-control",
+                              domProps: {
+                                textContent: _vm._s(_vm.numero_noches)
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-2" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-text font-weight-bold mb-0"
+                              },
+                              [_vm._v("Total Reservacion")]
+                            ),
+                            _vm._v(" "),
+                            _c("p", {
+                              staticClass: "form-control",
+                              domProps: {
+                                textContent: _vm._s(_vm.total_recepcion)
+                              }
+                            })
+                          ])
+                        ])
+                      ]
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
@@ -64754,15 +65145,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Tipo Pago")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Fecha Ingreso")]),
         _vm._v(" "),
         _c("th", [_vm._v("Fecha Salida")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Adultos")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Niños")]),
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
       ])

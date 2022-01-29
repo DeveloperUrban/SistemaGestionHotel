@@ -2788,6 +2788,13 @@ tbody.collapse.show {
   background-color: #f0f3f5;
   border-bottom: 1px solid #c2cfd6; }
 
+  .card-cabecera {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    color: #151b1e;
+    border-bottom: 1px solid #c2cfd6;
+    text-transform: uppercase; }
+
 .card-footer {
   padding: 0.75rem 1.25rem;
   background-color: #f0f3f5;

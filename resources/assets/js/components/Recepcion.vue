@@ -39,11 +39,8 @@
                                         <th>Precio</th>
                                         <th>N° Noches</th>
                                         <th>Total</th>
-                                        <th>Tipo Pago</th>
                                         <th>Fecha Ingreso</th>
                                         <th>Fecha Salida</th>
-                                        <th>Adultos</th>
-                                        <th>Niños</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -70,11 +67,8 @@
                                         <td v-text="recepcion.precio"></td>
                                         <td v-text="recepcion.numero_noches"></td>
                                         <td v-text="recepcion.total_recepcion"></td>
-                                        <td v-text="recepcion.tipo_pago"></td>
                                         <td v-text="recepcion.fecha_ingreso"></td>
                                         <td v-text="recepcion.fecha_salida"></td>
-                                        <td v-text="recepcion.numero_adultos"></td>
-                                        <td v-text="recepcion.numero_ninos"></td>
                                         <td v-text="recepcion.estado"></td>
 
                                      
@@ -255,46 +249,141 @@
                     
                     <!-- Ver Recepcion -->
                     <template v-else-if="listado==2">
+                    
                     <div class="card-body">
-                        <div class="form-group row border">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label for="">Numero</label>
-                                    <p v-text="numero"></p>
+                        <div class="card border-secondary mb-3">
+                            <div class="card-cabecera">Detalle Habitación</div>
+                            <div class="card-body row align-items-center">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Numero</label>
+                                        <p class="form-text" v-text="numero"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Detalle</label>
+                                        <p  class="form-text" v-text="detalle"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-text font-weight-bold mb-0">Categoria</label>
+                                    <p class="form-text" v-text="nombre_tipohabitacion"></p>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-text font-weight-bold mb-0">Piso</label>
+                                    <p class="form-text" v-text="nombre_piso"></p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="">Detalle</label>
-                                <p v-text="detalle"></p>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Precio</label>
-                                    <p v-text="precio"></p>
-                                </div>
-                            </div>
-                            <!-- <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Serie Comprobante</label>
-                                    <p v-text="serie_comprobante"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Número Comprobante</label>
-                                    <p v-text="num_comprobante"></p>
-                                </div>
-                            </div> -->
                         </div>
-                     
-                        
+
+                        <div class="card border-secondary mb-3">
+                            <div class="card-cabecera">Detalle Cliente</div>
+                            <div class="card-body row align-items-center">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Tipo Documento</label>
+                                        <p class="form-text" v-text="tipo_documento"></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Numero Documento</label>
+                                        <p class="form-text" v-text="numero_documento"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Apellidos y Nombres</label>
+                                        <p  class="form-text" v-text="apellidos_nombre"></p>
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Correo</label>
+                                        <p  class="form-text" v-text="email"></p>
+                                    </div>
+                                </div>
+                                
+                                 <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Celular</label>
+                                        <p  class="form-text" v-text="celular"></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card border-secondary mb-3">
+                            <div class="card-cabecera">Detalle Reservación</div>
+                            <div class="card-body row align-items-center">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Fecha Ingreso</label>
+                                        <p class="form-text" v-text="fecha_ingreso"></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Fecha Salida</label>
+                                        <p class="form-text" v-text="fecha_salida"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">N° Adultos</label>
+                                        <p  class="form-text" v-text="numero_adultos"></p>
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">N° Niños</label>
+                                        <p  class="form-text" v-text="numero_ninos"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Tipo Pago</label>
+                                        <p  class="form-text" v-text="tipo_pago"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Precio</label>
+                                        <p  class="form-control" v-text="precio"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">N° Noches</label>
+                                        <p  class="form-control" v-text="numero_noches"></p>
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="form-text font-weight-bold mb-0">Total Reservacion</label>
+                                        <p  class="form-control" v-text="total_recepcion"></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
-                                
                             </div>
-                        </div>
+                         </div>
                     </div>
+
+                 
+
                     </template>
                     <!-- fin ver ingreso -->
                 </div>
@@ -381,6 +470,7 @@
                 tipo_documento:'',
                 numero_documento:'',
                 email:'',
+                celular:'',
                 numero:'',
                 detalle:'',
                 nombre_tipohabitacion:'',
@@ -579,18 +669,25 @@
             mostrarDetalle(){
                 let me=this;
                 me.listado=0;
-
-                // me.idproveedor=0;
-                // me.tipo_comprobante='BOLETA';
-                // me.serie_comprobante='';
-                // me.num_comprobante='';
-                // me.impuesto=0.18;
-                // me.total=0.0;
-                // me.idarticulo=0;
-                // me.articulo='';
-                // me.cantidad=0;
-                // me.precio=0;
-                // me.arrayDetalle=[];
+                me.recepcion_id=0;
+                me.apellidos_nombre='';
+                me.tipo_documento='';
+                me.numero_documento='';   
+                me.email='';
+                me.celular='';
+                me.numero='';
+                me.detalle='';
+                me.nombre_tipohabitacion='';
+                me.nombre_piso='';
+               
+                me.precio='';
+                me.numero_noches=0;
+                me.total_recepcion=0;
+                me.tipo_pago='';
+                me.fecha_ingreso='';
+                me.fecha_salida='';
+                me.numero_adultos=0;
+                me.numero_ninos=0;
             },
             ocultarDetalle(){
                 this.listado=1;
@@ -608,9 +705,14 @@
                     arrayRecepcionT = respuesta.recepciones;
 
                     me.apellidos_nombre=arrayRecepcionT[0]['apellidos_nombre'];
+                    me.tipo_documento = arrayRecepcionT[0]['tipo_documento'];
                     me.numero_documento=arrayRecepcionT[0]['numero_documento'];
+                    me.email = arrayRecepcionT[0]['email'];
+                    me.celular = arrayRecepcionT[0]['celular'];
                     me.numero = arrayRecepcionT[0]['numero'];
                     me.detalle = arrayRecepcionT[0]['detalle'];
+                    me.nombre_tipohabitacion = arrayRecepcionT[0]['categoria'];
+                    me.nombre_piso = arrayRecepcionT[0]['piso'];
                     me.precio = arrayRecepcionT[0]['precio'];
                     me.numero_noches = arrayRecepcionT[0]['numero_noches'];
                     me.total_recepcion = arrayRecepcionT[0]['total_recepcion'];
@@ -635,7 +737,7 @@
                 this.modal = 1;
                 this.tituloModal = 'Seleccione Habitacion';
             },
-            desactivarVenta(id){
+            desactivarRecepcion(id){
                 Swal.fire({
                 title: '¿Estas seguro de desactivar la venta?',
                 icon: 'warning',
@@ -647,10 +749,10 @@
                 }).then((result) => {
                 if (result.isConfirmed) {
                     let me = this;
-                    axios.put('/venta/desactivar',{
+                    axios.put('/recepcion/desactivar',{
                         'id': id
                     }).then(function (response) {
-                        me.listarVenta(1,'','num_comprobante');
+                        me.listarRecepcion(1,'','numero_documento');
                         swal(
                         'Anulado!',
                         'La venta ha sido anulada con éxito.',
