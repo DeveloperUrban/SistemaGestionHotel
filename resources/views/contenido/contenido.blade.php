@@ -38,7 +38,7 @@
 </template>
 
 <template v-if="menu==9">
-  <h1>Vista Ventas</h1>
+  <venta></venta>
 </template>
 
 <template v-if="menu==10">

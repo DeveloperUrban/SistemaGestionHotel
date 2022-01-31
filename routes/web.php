@@ -81,3 +81,10 @@ Route::post('/recepcion/registrar', 'RecepcionController@store');
 Route::put('/recepcion/desactivar','RecepcionController@desactivar');
 Route::get('/recepcion/obtenerRecepcion','RecepcionController@obtenerRecepcion');
 
+
+//Las rutas de la tabla venta
+Route::get('/venta', 'VentaController@index');
+Route::post('/venta/registrar', 'VentaController@store');
+Route::put('/venta/actualizar','VentaController@update');
+Route::put('/venta/desactivar','VentaController@desactivar');
+Route::put('/venta/activar','VentaController@activar');

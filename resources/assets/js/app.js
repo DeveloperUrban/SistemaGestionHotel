@@ -24,6 +24,7 @@ Vue.component('subcategoria', require('./components/Subcategoria.vue'));
 Vue.component('producto', require('./components/Producto.vue'));
 Vue.component('cliente', require('./components/Cliente.vue'));
 Vue.component('recepcion', require('./components/Recepcion.vue'));
+Vue.component('venta', require('./components/Venta.vue'));
 
 const app = new Vue({
     el: '#app',
