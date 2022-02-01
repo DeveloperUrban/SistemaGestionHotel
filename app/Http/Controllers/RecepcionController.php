@@ -52,6 +52,30 @@ class RecepcionController extends Controller
              'recepciones' =>$recepciones
          ];
      }
+
+     public function selectRecepcion(Request $request){
+        $filtro = $request->filtro;
+        // $recepciones = Recepcion::where('apellidos_nombre', 'like', '%'. $filtro . '%')
+        // ->orWhere('numero_documento', 'like', '%'. $filtro . '%')
+        // ->select('id','apellidos_nombre','numero_documento','tipo_documento','email')
+        // ->orderBy('apellidos_nombre', 'asc')->get();
+
+        // return ['clientes' => $clientes];
+
+        $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
+                                ->join('personas','recepciones.id_cliente','=','personas.id')
+                                ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
+                                ->join('pisos','habitaciones.idpiso','=','pisos.id')
+                                ->select('recepciones.id as id_recepcion','personas.numero_documento','personas.apellidos_nombre','personas.celular',
+                                'personas.email','habitaciones.numero as numero_habitacion','habitaciones.detalle','tipohabitaciones.nombre as categoria',
+                                'pisos.nombre as piso','recepciones.fecha_ingreso')
+                                ->where('personas.apellidos_nombre', 'like', '%'. $filtro . '%')
+                                ->orderBy('recepciones.id','desc')->get();
+        
+        return ['recepciones'=>$recepciones];
+
+        
+     }
  
      public function store(Request $request){
          //if (!$request->ajax()) return redirect('/');

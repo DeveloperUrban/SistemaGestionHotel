@@ -60,6 +60,8 @@ Route::post('/producto/registrar', 'ProductoController@store');
 Route::put('/producto/actualizar','ProductoController@update');
 Route::put('/producto/desactivar','ProductoController@desactivar');
 Route::put('/producto/activar','ProductoController@activar');
+Route::get('producto/listarProductoVenta','ProductoController@listarProductoVenta');
+
 
 
 //Las rutas de la tabla Cliente
@@ -80,6 +82,7 @@ Route::get('/recepcion', 'RecepcionController@index');
 Route::post('/recepcion/registrar', 'RecepcionController@store');
 Route::put('/recepcion/desactivar','RecepcionController@desactivar');
 Route::get('/recepcion/obtenerRecepcion','RecepcionController@obtenerRecepcion');
+Route::get('recepcion/selectRecepcion','RecepcionController@selectRecepcion');
 
 
 //Las rutas de la tabla venta

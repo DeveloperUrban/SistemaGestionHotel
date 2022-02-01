@@ -76,7 +76,7 @@ class ClienteController extends Controller
             $persona->id_departamento=$request->id_departamento;
             $persona->id_provincia=$request->id_provincia;
             $persona->id_distrito=$request->id_distrito;
-            strtoupper($persona->apellidos_nombre=$request->apellidos_nombre);
+            $persona->apellidos_nombre=strtoupper($request->apellidos_nombre);
             $persona->tipo_documento=$request->tipo_documento;
             $persona->numero_documento=$request->numero_documento;
             $persona->direccion=$request->direccion;

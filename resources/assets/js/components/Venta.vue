@@ -1,12 +1,12 @@
 <template>
     <main class="main">
         <!-- Breadcrumb -->
-        <ol class="breadcrumb">
+        <!-- <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Escritorio</a></li>
-        </ol>
+        </ol> -->
         <div class="container-fluid">
             <!-- Ejemplo de tabla Listado -->
-            <div class="card">
+            <div class="card" style="margin-top:15px;">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Ventas
                     <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
@@ -93,61 +93,68 @@
                 <template v-else-if="listado==0">
                
                  <div class="card-body">
+                   
                     <div class="form-group row border">
-                        <div class="col-md-5">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <label class="form-text font-weight-bold mb-0">Cliente(*)</label>
+                                <div class="col-md-12 espacio-arriba" style="border-bottom: 1px solid #c2cfd6;">
+                                    <h5>Resumen Recepción</h5>
+                                </div>
+                            </div>
+                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-text font-weight-bold">Cliente(*)</label>
                                 <v-select
-                                    @search="selectCliente"
-                                    label="nombre"
-                                    :options="arrayCliente"
+                                    @search="selectRecepcion"
+                                    label="apellidos_nombre"
+                                    :options="arrayRecepcion"
                                     placeholder="Buscar Cliente"
-                                    @input="getDatosCliente"                                        
+                                    @input="getDatosRecepcion"
                                 >
 
                                 </v-select>
                             </div>
                         </div>
-                        
-                        <div class="col-md-2">
-                             <label class="form-text font-weight-bold mb-0">N° Habitación</label>
-                             <p class="form-text" >404</p>
-                        </div>
-                        <div class="col-md-3">
-                             <label class="form-text font-weight-bold mb-0">Detalle</label>
-                             <p class="form-text" >HABITACION DOBLE + AGUA CALIENTE</p>
+
+                          <div class="col-md-2">
+                             <label class="form-text font-weight-bold mb-0">N° Documento</label>
+                             <p class="form-text" v-text="numero_documento"></p>
                         </div>
 
                         <div class="col-md-1">
+                             <label class="form-text font-weight-bold mb-0">Celular</label>
+                             <p class="form-text" v-text="celular"></p>
+                        </div>
+
+                        <div class="col-md-2">
+                             <label class="form-text font-weight-bold mb-0">Correo</label>
+                             <p class="form-text" v-text="email"></p>
+                        </div>
+                        
+                        <div class="col-md-2">
+                             <label class="form-text font-weight-bold mb-0">N° Habitación</label>
+                             <p class="form-text" v-text="numero_habitacion"></p>
+                        </div>
+                        <div class="col-md-4">
+                             <label class="form-text font-weight-bold mb-0">Detalle</label>
+                             <p class="form-text" v-text="detalle"></p>
+                        </div>
+
+                        <div class="col-md-2">
                              <label class="form-text font-weight-bold mb-0">Categoria</label>
-                             <p class="form-text" >DOBLE</p>
+                             <p class="form-text" v-text="categoria"></p>
                         </div>
 
                         <div class="col-md-1">
                            
                              <label class="form-text font-weight-bold mb-0">Piso</label>
-                             <p class="form-text" >PISO 01</p>
+                             <p class="form-text" v-text="piso"></p>
                         </div>
 
-                        <div class="col-md-2">
-                             <label class="form-text font-weight-bold mb-0">N° Documento</label>
-                             <p class="form-text" >72321703</p>
-                        </div>
-
-
-                        <div class="col-md-2">
-                             <label class="form-text font-weight-bold mb-0">Celular</label>
-                             <p class="form-text" >921873007</p>
-                        </div>
-
-                        <div class="col-md-2">
+                       <div class="col-md-2">
                              <label class="form-text font-weight-bold mb-0">Fecha Ingreso</label>
-                             <p class="form-text" >31/01/2022</p>
-                        </div>
-
-                        <div class="col-md-2">
-                             <label class="form-text font-weight-bold mb-0">Fecha Salida</label>
-                             <p class="form-text" >15/02/2022</p>
+                             <p class="form-text" v-text="fecha_ingreso"></p>
                         </div>
 
                         <div class="col-md-12">
@@ -162,25 +169,8 @@
                     </div>
                     
                       <div class="form-group row border">
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <label for="">Cliente(*)</label>
-                                <v-select
-                                    @search="selectCliente"
-                                    label="nombre"
-                                    :options="arrayCliente"
-                                    placeholder="Buscar Clientes..."
-                                    @input="getDatosCliente"                                        
-                                >
-
-                                </v-select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="">Impuesto(*)</label>
-                            <input type="text" class="form-control" v-model="impuesto">
-                        </div>
-                        <div class="col-md-4">
+                        
+                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Tipo Comprobante(*)</label>
                                 <select class="form-control" v-model="tipo_comprobante">
@@ -191,13 +181,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <div class="col-md-3">
+                            <label for="">Impuesto(*)</label>
+                            <input type="text" class="form-control" v-model="impuesto">
+                        </div>
+                       
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Serie Comprobante</label>
                                 <input type="text" class="form-control" v-model="serie_comprobante" placeholder="000x">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Número Comprobante(*)</label>
                                 <input type="text" class="form-control" v-model="num_comprobante" placeholder="000xx">
@@ -217,7 +213,7 @@
                     <div class="form-group row border">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Artículo <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
+                                <label>Producto <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
                                 <div class="form-inline">
                                     <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese Codigo">
                                     <button @click="abrirModal()" class="btn btn-primary">...</button>
@@ -433,8 +429,8 @@
                                     <option value="descripcion">Descripción</option>
                                     <option value="codigo">Código</option>
                                     </select>
-                                    <input type="text" v-model="buscarA" @keyup.enter="listarArticulo(buscarA,criterioA)" class="form-control" placeholder="Texto a buscar">
-                                    <button type="submit" @click="listarArticulo(buscarA,criterioA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    <input type="text" v-model="buscarA" @keyup.enter="listarProducto(buscarA,criterioA)" class="form-control" placeholder="Texto a buscar">
+                                    <button type="submit" @click="listarProducto(buscarA,criterioA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
                             </div>
                         </div>
@@ -498,6 +494,18 @@
         props : ['ruta'],
         data (){
             return {
+                id_recepcion:0,
+                numero_documento:'',
+                apellidos_nombre:'',
+                celular:'',
+                email:'',
+                numero_habitacion:'',
+                detalle:'',
+                categoria:'',
+                piso:'',
+                fecha_ingreso:'',
+                arrayRecepcion: [],
+
                 venta_id: 0,
                 idcliente:0,
                 cliente:'',
@@ -509,7 +517,6 @@
                 totalImpuesto: 0.0,
                 totalParcial: 0.0,
                 arrayVenta : [],
-                arrayCliente: [],
                 arrayDetalle : [],
                 listado:1,
                 modal : 0,
@@ -591,24 +598,50 @@
                     console.log(error);
                 });
             },
-            selectCliente(search,loading){
+            selectRecepcion(search,loading){
                 let me=this;
                 loading(true)
-                var url='/cliente/selectCliente?filtro='+search;
+                var url='recepcion/selectRecepcion?filtro='+search;
                 axios.get(url).then(function (response) {
                     let respuesta = response.data;
                     q: search
-                    me.arrayCliente=respuesta.clientes;
+                    me.arrayRecepcion=respuesta.recepciones;
                     loading(false)
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             }, 
-            getDatosCliente(val1){
+            getDatosRecepcion(val1){
                 let me = this;
-                me.loading = true;
-                me.idcliente = val1.id;
+                   if(val1===null && typeof val1==='object')
+                   {
+                        me.id_recepcion = '';
+                        me.numero_documento='';
+                        me.apellidos_nombre='';
+                        me.celular='';
+                        me.email='';
+                        me.numero_habitacion='';
+                        me.detalle='';
+                        me.categoria='';
+                        me.piso = '';
+                        me.fecha_ingreso = '';
+                   }else{
+                        me.loading = true;
+                        me.id_recepcion = val1.id_recepcion;
+                        me.numero_documento=val1.numero_documento;
+                        me.apellidos_nombre=val1.apellidos_nombre;
+                        me.celular=val1.celular;
+                        me.email=val1.email;
+                        me.numero_habitacion=val1.numero_habitacion;
+                        me.detalle=val1.detalle;
+                        me.categoria=val1.categoria;
+                        me.piso = val1.piso;
+                        me.fecha_ingreso = val1.fecha_ingreso;
+                   }
+                   
+                   
+                    
             },
 
             buscarArticulo(){
@@ -634,9 +667,9 @@
                     console.log(error);
                 });
             },
-            pdfVenta(id){
-                window.open('/venta/pdf/'+ id + ',' + '_blank');
-            },
+            // pdfVenta(id){
+            //     window.open('/venta/pdf/'+ id + ',' + '_blank');
+            // },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la página actual
@@ -721,9 +754,9 @@
                         }); 
                     }
             },
-            listarArticulo (buscar,criterio){
+            listarProducto (buscar,criterio){
                 let me=this;
-                var url='/articulo/listarArticuloVenta?buscar='+ buscar + '&criterio='+ criterio;
+                var url='/producto/listarProductoVenta?buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayArticulo = respuesta.articulos.data;
@@ -797,6 +830,17 @@
             mostrarDetalle(){
                 let me=this;
                 me.listado=0;
+                me.id_recepcion=0,
+                me.numero_documento='',
+                me.apellidos_nombre='',
+                me.celular='',
+                me.email='',
+                me.numero_habitacion='',
+                me.detalle='',
+                me.categoria='',
+                me.piso='',
+                me.fecha_ingreso='',
+                me.arrayRecepcion= [],
 
                 me.idproveedor=0;
                 me.tipo_comprobante='BOLETA';
