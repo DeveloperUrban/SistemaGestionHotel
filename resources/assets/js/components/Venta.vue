@@ -112,7 +112,6 @@
                                     placeholder="Buscar Cliente"
                                     @input="getDatosRecepcion"
                                 >
-
                                 </v-select>
                             </div>
                         </div>
@@ -156,19 +155,88 @@
                              <label class="form-text font-weight-bold mb-0">Fecha Ingreso</label>
                              <p class="form-text" v-text="fecha_ingreso"></p>
                         </div>
-
-                        <div class="col-md-12">
-                            <div v-show="errorVenta" class="form-group row div-error">
-                                <div class="text-center text-error">
-                                    <div v-for="error in errorMostrarMsjVenta" :key="error" v-text="error">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     
-                      <div class="form-group row border">
+                    <div class="card ">
+                        <div class="card-header col-sm-12">
+                            <p>Titulo</p>
+                        </div>
+                        <div class="card-body row col-sm-12">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante(*)</label>
+                                    <select class="form-control" v-model="tipo_comprobante">
+                                        <option value="0">Seleccione</option>
+                                        <option value="BOLETA">Boleta</option>
+                                        <option value="FACTURA">Factura</option>
+                                        <option value="TICKET">Ticket</option>
+                                    </select>
+                                </div>
+                           </div>
+                            
+                            <div class="col-md-3">
+                                <label for="">Impuesto(*)</label>
+                                <input type="text" class="form-control" v-model="impuesto">
+                           </div>
+                       
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Serie Comprobante</label>
+                                    <input type="text" class="form-control" v-model="serie_comprobante" placeholder="000x">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Número Comprobante(*)</label>
+                                    <input type="text" class="form-control" v-model="num_comprobante" placeholder="000xx">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Producto <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese Codigo">
+                                        <button @click="abrirModal()" class="btn btn-primary">...</button>
+                                        <input type="text" readonly class="form-control col-sm-5" v-model="articulo">
+                                    </div>                                    
+                                </div>
+                           </div>
+                           <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Precio <span style="color:red;" v-show="precio==0">(*Ingrese)</span></label>
+                                    <input type="number" value="0" step="any" class="form-control" v-model="precio">
+                                </div>
+                            </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Cantidad <span style="color:red;" v-show="cantidad==0">(*Ingrese)</span></label>
+                                <input type="number" value="0" class="form-control" v-model="cantidad">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Descuento</label>
+                                <input type="number" value="0" class="form-control" v-model="descuento">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
+                            </div>
+                        </div>
+
+                        </div>
+
+
+
+                        <div class="card-footer col-sm-12">
+                            <p>Pie card</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row border">
                         
                          <div class="col-md-3">
                             <div class="form-group">
@@ -209,7 +277,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group row border">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -284,15 +351,15 @@
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="5" align="right"><strong>Total Parcial:</strong></td>
-                                        <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
+                                        <td>S/. {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="5" align="right"><strong>Total Impuesto:</strong></td>
-                                        <td>$ {{totalImpuesto=((total*impuesto)/(1+impuesto)).toFixed(2)}}</td>
+                                        <td>S/. {{totalImpuesto=((total*impuesto)/(1+impuesto)).toFixed(2)}}</td>
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="5" align="right"><strong>Total Neto:</strong></td>
-                                        <td>$ {{total=calcularTotal}}</td>
+                                        <td>S/. {{total=calcularTotal}}</td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
@@ -305,6 +372,7 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <div class="col-md-12">
                             <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
@@ -377,15 +445,15 @@
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="4" align="right"><strong>Total Parcial:</strong></td>
-                                        <td>$ {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
+                                        <td>S/. {{totalParcial=(total-totalImpuesto).toFixed(2)}}</td>
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="4" align="right"><strong>Total Impuesto:</strong></td>
-                                        <td>$ {{totalImpuesto=((total*impuesto)).toFixed(2)}}</td>
+                                        <td>S/. {{totalImpuesto=((total*impuesto)).toFixed(2)}}</td>
                                     </tr>
                                     <tr style="background-color: #CEECF5;">
                                         <td colspan="4" align="right"><strong>Total Neto:</strong></td>
-                                        <td>$ {{total}}</td>
+                                        <td>S/. {{total}}</td>
                                     </tr>
                                 </tbody>
                                 <tbody v-else>
@@ -401,7 +469,6 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
-                            
                         </div>
                     </div>
                 </div>
@@ -448,19 +515,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="articulo in arrayArticulo" :key="articulo.id">
+                                    <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="agregarDetalleModal(articulo)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="agregarDetalleModal(producto)" class="btn btn-success btn-sm">
                                             <i class="icon-check"></i>
                                             </button>
                                         </td>
-                                        <td v-text="articulo.codigo"></td>
-                                        <td v-text="articulo.nombre"></td>
-                                        <td v-text="articulo.nombre_categoria"></td>
-                                        <td v-text="articulo.precio_venta"></td>
-                                        <td v-text="articulo.stock"></td>
+                                        <td v-text="producto.codigo"></td>
+                                        <td v-text="producto.nombre"></td>
+                                        <td v-text="producto.nombre_categoria"></td>
+                                        <td v-text="producto.precio_venta"></td>
+                                        <td v-text="producto.stock"></td>
                                         <td>
-                                            <div v-if="articulo.condicion">
+                                            <div v-if="producto.condicion">
                                                 <span class="badge badge-success">Activo</span>
                                             </div>
                                             <div v-else>
@@ -475,8 +542,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                        <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarPersona()">Guardar</button>
-                        <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarPersona()">Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -537,7 +602,7 @@
                 buscar : '',
                 criterioA:'nombre',
                 buscarA: '',
-                arrayArticulo: [],
+                arrayProducto: [],
                 idarticulo: 0,
                 codigo: '',
                 articulo: '',
@@ -646,11 +711,11 @@
 
             buscarArticulo(){
                 let me=this;
-                var url='/articulo/buscarArticuloVenta?filtro=' + me.codigo;
+                var url='/producto/buscarProductoVenta?filtro=' + me.codigo;
 
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos;
+                    me.arrayArticulo = respuesta.productos;
 
                     if (me.arrayArticulo.length>0){
                         me.articulo=me.arrayArticulo[0]['nombre'];
@@ -696,28 +761,28 @@
                 }
                 else{
                     if(me.encuentra(me.idarticulo)){
-                        swal({
-                            type: 'error',
+                        Swal.fire({
+                            icon: 'error',
                             title: 'Error...',
-                            text: 'Ese artículo ya se encuentra agregado!',
+                            text: 'Ese producto ya se encuentra agregado!',
                             })
                     }
                     else{
                        if(me.cantidad>me.stock){
-                           swal({
-                            type: 'error',
+                           Swal.fire({
+                            icon: 'error',
                             title: 'Error...',
                             text: 'NO hay stock disponible!',
                             })
                        } 
                        else{
-                           me.arrayDetalle.push({
-                                idarticulo: me.idarticulo,
-                                articulo: me.articulo,
-                                cantidad: me.cantidad,
-                                precio: me.precio,
-                                descuento: me.descuento,
-                                stock: me.stock
+                            me.arrayDetalle.push({
+                            idarticulo: me.idarticulo,
+                            articulo: me.articulo,
+                            cantidad: me.cantidad,
+                            precio: me.precio,
+                            descuento: me.descuento,
+                            stock: me.stock
                             });
                             me.codigo="";
                             me.idarticulo=0;
@@ -730,15 +795,12 @@
                     }
                     
                 }
-
-                
-
             },
             agregarDetalleModal(data =[]){
                 let me=this;
                 if(me.encuentra(data['id'])){
-                        swal({
-                            type: 'error',
+                        Swal.fire({
+                            icon: 'error',
                             title: 'Error...',
                             text: 'Ese artículo ya se encuentra agregado!',
                             })
@@ -757,15 +819,17 @@
             listarProducto (buscar,criterio){
                 let me=this;
                 var url='/producto/listarProductoVenta?buscar='+ buscar + '&criterio='+ criterio;
+                console.log(url);
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos.data;
+                    me.arrayProducto = respuesta.productos.data;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
             registrarVenta(){
+
                 if (this.validarVenta()){
                     return;
                 }
@@ -773,7 +837,7 @@
                 let me = this;
 
                 axios.post('/venta/registrar',{
-                    'idcliente': this.idcliente,
+                    'id_recepcion': this.id_recepcion,
                     'tipo_comprobante': this.tipo_comprobante,
                     'serie_comprobante' : this.serie_comprobante,
                     'num_comprobante' : this.num_comprobante,
@@ -817,15 +881,17 @@
                     }
                 });
 
-                if (me.idcliente==0) me.errorMostrarMsjVenta.push("Seleccione un Cliente");
+                if (me.id_recepcion==0) me.errorMostrarMsjVenta.push("Seleccione un Cliente");
                 if (me.tipo_comprobante==0) me.errorMostrarMsjVenta.push("Seleccione el comprobante");
                 if (!me.num_comprobante) me.errorMostrarMsjVenta.push("Ingrese el número de comprobante");
                 if (!me.impuesto) me.errorMostrarMsjVenta.push("Ingrese el impuesto de compra");
                 if (me.arrayDetalle.length<=0) me.errorMostrarMsjVenta.push("Ingrese detalles");
 
                 if (me.errorMostrarMsjVenta.length) me.errorVenta = 1;
-
+                console.log(me.errorMostrarMsjVenta);
                 return me.errorVenta;
+
+                
             },
             mostrarDetalle(){
                 let me=this;

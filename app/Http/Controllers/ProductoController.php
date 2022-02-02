@@ -57,13 +57,13 @@ class ProductoController extends Controller
          $criterio = $request->criterio;
          
          if ($buscar==''){
-             $articulos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
              ->select('productos.id','productos.idcategoria','productos.codigo','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
              ->where('productos.stock','>','0')
              ->orderBy('productos.id', 'desc')->paginate(10);
          }
          else{
-             $articulos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+             $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
              ->select('productos.id','productos.idcategoria','productos.codigo','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
              ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
              ->where('productos.stock','>','0')
@@ -71,8 +71,22 @@ class ProductoController extends Controller
          }
          
  
-         return ['articulos' => $articulos];
+         return ['productos' => $productos];
      }
+
+    public function buscarProductoVenta(Request $request){
+        // if(!$request->ajax()) return redirect('/');
+
+        $filtro = $request->filtro;
+        $productos = Producto::where('codigo','=',$filtro)
+        ->select('id','nombre','stock','precio_venta')
+        ->where('stock','>','0')
+        ->orderBy('nombre','asc')
+        ->take(1)->get();
+
+        return ['productos'=>$productos];
+    }
+      
      public function store(Request $request){
          //if (!$request->ajax()) return redirect('/');
          $producto = new Producto();

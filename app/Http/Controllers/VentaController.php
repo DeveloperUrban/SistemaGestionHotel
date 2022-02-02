@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
-//use Carbon\Carbon;
+// use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use App\Venta;
 use App\DetalleVenta;
 //use App\User;
@@ -72,7 +72,7 @@ class VentaController extends Controller
         $venta->impuesto = $request->impuesto;
         $venta->total = $request->total;
         $venta->estado = $request->estado;
-        $venta->venta();
+        $venta->save();
 
        
         $detalles = $request->data;  //Array de detalles 
