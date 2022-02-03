@@ -93,3 +93,5 @@ Route::post('/venta/registrar', 'VentaController@store');
 Route::put('/venta/actualizar','VentaController@update');
 Route::put('/venta/desactivar','VentaController@desactivar');
 Route::put('/venta/activar','VentaController@activar');
+Route::get('/venta/obtenerCabecera','VentaController@obtenerCabecera');
+Route::get('/venta/obtenerDetalles','VentaController@obtenerDetalles');

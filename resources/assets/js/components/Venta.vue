@@ -54,14 +54,14 @@
                                         <!-- <button type="button" @click="pdfVenta(venta.id)" class="btn btn-info btn-sm">
                                         <i class="icon-doc"></i>
                                         </button> &nbsp; -->
-                                        <template v-if="venta.estado=='Registrado'">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarVenta(venta.id)">
+                                        <template v-if="venta.estado=='Pendiente'">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="PagarVenta(venta.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                     </td>
                                     <!-- <td v-text="venta.usuario"></td> -->
-                                    <td v-text="venta.nombre"></td>
+                                    <td v-text="venta.apellidos_nombre"></td>
                                     <td v-text="venta.tipo_comprobante"></td>
                                     <td v-text="venta.serie_comprobante"></td>
                                     <td v-text="venta.num_comprobante"></td>
@@ -159,7 +159,7 @@
                     
                     <div class="card ">
                         <div class="card-header col-sm-12">
-                            <p>Titulo</p>
+                            <h5>Detalle Venta</h5>
                         </div>
                         <div class="card-body row col-sm-12">
                             <div class="col-md-3">
@@ -199,7 +199,7 @@
                                     <div class="form-inline">
                                         <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese Codigo">
                                         <button @click="abrirModal()" class="btn btn-primary">...</button>
-                                        <input type="text" readonly class="form-control col-sm-5" v-model="articulo">
+                                        <input type="text" readonly class="form-control col-sm-4" v-model="articulo">
                                     </div>                                    
                                 </div>
                            </div>
@@ -229,93 +229,9 @@
 
                         </div>
 
-
-
-                        <div class="card-footer col-sm-12">
-                            <p>Pie card</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group row border">
-                        
-                         <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Tipo Comprobante(*)</label>
-                                <select class="form-control" v-model="tipo_comprobante">
-                                    <option value="0">Seleccione</option>
-                                    <option value="BOLETA">Boleta</option>
-                                    <option value="FACTURA">Factura</option>
-                                    <option value="TICKET">Ticket</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="">Impuesto(*)</label>
-                            <input type="text" class="form-control" v-model="impuesto">
-                        </div>
-                       
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Serie Comprobante</label>
-                                <input type="text" class="form-control" v-model="serie_comprobante" placeholder="000x">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Número Comprobante(*)</label>
-                                <input type="text" class="form-control" v-model="num_comprobante" placeholder="000xx">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div v-show="errorVenta" class="form-group row div-error">
-                                <div class="text-center text-error">
-                                    <div v-for="error in errorMostrarMsjVenta" :key="error" v-text="error">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row border">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Producto <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
-                                <div class="form-inline">
-                                    <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese Codigo">
-                                    <button @click="abrirModal()" class="btn btn-primary">...</button>
-                                    <input type="text" readonly class="form-control" v-model="articulo">
-                                </div>                                    
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Precio <span style="color:red;" v-show="precio==0">(*Ingrese)</span></label>
-                                <input type="number" value="0" step="any" class="form-control" v-model="precio">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Cantidad <span style="color:red;" v-show="cantidad==0">(*Ingrese)</span></label>
-                                <input type="number" value="0" class="form-control" v-model="cantidad">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Descuento</label>
-                                <input type="number" value="0" class="form-control" v-model="descuento">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <button @click="agregarDetalle()" class="btn btn-success form-control btnagregar"><i class="icon-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row border">
-                        <div class="table-responsive col-md-12">
+                         <div class="table-responsive col-md-12">
                             <table class="table table-bordered table-striped table-sm">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
                                         <th>Opciones</th>
                                         <th>Artículo</th>
@@ -371,12 +287,34 @@
                                 </tbody>                                    
                             </table>
                         </div>
-                    </div>
 
+                        <div class="card-footer col-sm-12 ">
+                           <div class="input-group col-sm-4">
+                               <div class="input-group-prepend">
+                                   <label class="input-group-text" for="inputGroupSelect01">Estado Venta</label>
+                               </div>
+                               <select class="custom-select" id="cboestadoventa" v-model="estado">
+                                   <option value="">Seleccione</option>
+                                   <option value="Pendiente">Pendiente</option>
+                                   <option value="Cancelado">Cancelado</option>
+                               </select>
+                           </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12">
+                        <div v-show="errorVenta" class="form-group row div-error">
+                            <div class="text-center text-error">
+                                <div v-for="error in errorMostrarMsjVenta" :key="error" v-text="error">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <button type="button" @click="ocultarDetalle()" class="btn btn-secondary">Cerrar</button>
-                            <button type="button" class="btn btn-primary" @click="registrarVenta()">Registrar Venta</button>
+                            <button type="button" @click="ocultarDetalle()" class="btn btn-cerrar">Cerrar</button>
+                            <button type="button" class="btn btn-registrar" @click="registrarVenta() ">Registrar Venta</button>
                         </div>
                     </div>
                 </div>
@@ -577,6 +515,7 @@
                 tipo_comprobante : 'BOLETA',
                 serie_comprobante : '',
                 num_comprobante : '',
+                estado:'',
                 impuesto: 0.18,
                 total:0.0,
                 totalImpuesto: 0.0,
@@ -658,6 +597,7 @@
                     var respuesta= response.data;
                     me.arrayVenta = respuesta.ventas.data;
                     me.pagination= respuesta.pagination;
+                    console.log(me.arrayVenta);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -843,6 +783,7 @@
                     'num_comprobante' : this.num_comprobante,
                     'impuesto' : this.impuesto,
                     'total' : this.total,
+                    'estado' :this.estado,
                     'data': this.arrayDetalle
 
                 }).then(function (response) {
@@ -853,6 +794,7 @@
                     me.serie_comprobante='';
                     me.num_comprobante='';
                     me.impuesto=0.18;
+                    me.estado='';
                     me.total=0.0;
                     me.idarticulo=0;
                     me.articulo='';
@@ -883,9 +825,11 @@
 
                 if (me.id_recepcion==0) me.errorMostrarMsjVenta.push("Seleccione un Cliente");
                 if (me.tipo_comprobante==0) me.errorMostrarMsjVenta.push("Seleccione el comprobante");
+                if(!me.serie_comprobante) me.errorMostrarMsjVenta.push("Ingrese serie");
                 if (!me.num_comprobante) me.errorMostrarMsjVenta.push("Ingrese el número de comprobante");
                 if (!me.impuesto) me.errorMostrarMsjVenta.push("Ingrese el impuesto de compra");
                 if (me.arrayDetalle.length<=0) me.errorMostrarMsjVenta.push("Ingrese detalles");
+                if(me.estado==0) me.errorMostrarMsjVenta.push("Selecione estado");
 
                 if (me.errorMostrarMsjVenta.length) me.errorVenta = 1;
                 console.log(me.errorMostrarMsjVenta);
@@ -935,7 +879,7 @@
                     var respuesta= response.data;
                     arrayVentaT = respuesta.venta;
 
-                    me.cliente = arrayVentaT[0]['nombre'];
+                    me.cliente = arrayVentaT[0]['apellidos_nombre'];
                     me.tipo_comprobante=arrayVentaT[0]['tipo_comprobante'];
                     me.serie_comprobante=arrayVentaT[0]['serie_comprobante'];
                     me.num_comprobante=arrayVentaT[0]['num_comprobante'];
@@ -967,15 +911,15 @@
                 this.modal = 1;
                 this.tituloModal = 'Seleccione uno o varios artículos';
             },
-            desactivarVenta(id){
+            PagarVenta(id){
                 Swal.fire({
-                title: '¿Estas seguro de desactivar la venta?',
+                title: '¿El cliente ya realizó el pago?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                cancelButtonText:'Cancelar',
-                confirmButtonText: 'Desactivar'
+                cancelButtonText:'No',
+                confirmButtonText: 'Sí'
                 }).then((result) => {
                 if (result.isConfirmed) {
                     let me = this;
@@ -984,8 +928,8 @@
                     }).then(function (response) {
                         me.listarVenta(1,'','num_comprobante');
                         swal(
-                        'Anulado!',
-                        'La venta ha sido anulada con éxito.',
+                        'Cancelado!',
+                        'La venta ha sido actulizado con éxito.',
                         'success'
                         )
                     }).catch(function (error) {
@@ -1004,12 +948,13 @@
 <style>    
     .modal-content{
         width: 100% !important;
-        position: absolute !important;
+        position: fixed !important;
+        top: 40% !important;
     }
     .mostrar{
         display: list-item !important;
         opacity: 1 !important;
-        position: absolute !important;
+        position: fixed !important;
         background-color: #3c29297a !important;
     }
     .div-error{
