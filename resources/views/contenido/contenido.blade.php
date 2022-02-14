@@ -50,7 +50,7 @@
 </template>
 
 <template v-if="menu==12">
-  <h1>Vista Roles</h1>
+  <rol></rol>
 </template>
 
 <template v-if="menu==13">

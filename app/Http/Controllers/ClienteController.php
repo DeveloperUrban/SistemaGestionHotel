@@ -10,7 +10,7 @@ use App\Cliente;
 class ClienteController extends Controller
 {
     public function index(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
  
          // $habitaciones = Habitacion::all();
          // return $habitaciones;
@@ -58,6 +58,7 @@ class ClienteController extends Controller
      }
 
      public function selectCliente(Request $request){
+        if (!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
         $clientes = Persona::where('apellidos_nombre', 'like', '%'. $filtro . '%')
         ->orWhere('numero_documento', 'like', '%'. $filtro . '%')
@@ -69,7 +70,7 @@ class ClienteController extends Controller
 
      public function store(Request $request){
 
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         try {
             DB::beginTransaction();
             $persona = new Persona();
@@ -101,7 +102,7 @@ class ClienteController extends Controller
      }
 
      public function update(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         try {
             DB::beginTransaction();
 

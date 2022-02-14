@@ -8,7 +8,7 @@ use App\Habitacion;
 class HabitacionController extends Controller
 {
     public function index(Request $request){
-       // if(!$request->ajax()) return redirect('/');
+       if(!$request->ajax()) return redirect('/');
 
         // $habitaciones = Habitacion::all();
         // return $habitaciones;
@@ -50,7 +50,7 @@ class HabitacionController extends Controller
     }
 
     public function store(Request $request){
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $habitacion = new Habitacion();
         $habitacion->idpiso = $request->idpiso;
         $habitacion->idtipohabitacion = $request->idtipohabitacion;
@@ -63,7 +63,7 @@ class HabitacionController extends Controller
 
     public function update(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $habitacion = Habitacion::findOrFail($request->id);
         $habitacion->numero = $request->numero;
         $habitacion->detalle = $request->detalle;
@@ -75,7 +75,7 @@ class HabitacionController extends Controller
     }
 
     public function activar(Request $request){
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $habitacion = Habitacion::findOrFail($request->id);
         $habitacion->estado='1';
         $habitacion->save();
@@ -83,7 +83,7 @@ class HabitacionController extends Controller
 
     public function desactivar(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $habitacion = Habitacion::findOrFail($request->id);
         $habitacion->estado='0';
         $habitacion->save();

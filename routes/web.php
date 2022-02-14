@@ -13,6 +13,15 @@
 Route::get('/', function () {
     return view('contenido/contenido');
 });
+
+//Las rutas de las tabla usuario
+Route::get('/rol','RolController@index');
+Route::post('/rol/registrar','RolController@store');
+Route::put('/rol/actulizar','RolController@update');
+Route::put('/rol/desactivar','RolController@desactivar');
+Route::put('/rol/activar','RolController@activar');
+
+
 //Las rutas de la tabla Piso
 Route::get('/piso', 'PisoController@index');
 Route::post('/piso/registrar', 'PisoController@store');

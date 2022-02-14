@@ -369,7 +369,7 @@
                                 </thead>
                                 <tbody v-if="arrayDetalle.length">
                                     <tr v-for="detalle in arrayDetalle" :key="detalle.id">
-                                        <td v-text="detalle.articulo">
+                                        <td v-text="detalle.producto">
                                         </td>
                                         <td v-text="detalle.precio">
                                         </td>
@@ -948,7 +948,7 @@
 <style>    
     .modal-content{
         width: 100% !important;
-        position: fixed !important;
+        position: absolute !important;
         top: 40% !important;
     }
     .mostrar{

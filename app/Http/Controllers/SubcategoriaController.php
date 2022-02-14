@@ -15,7 +15,7 @@ class SubcategoriaController extends Controller
     public function index(Request $request)
     {
         //Me permite hacer meter un poco de seguridad de las http y redireccionados a la principal
-        // if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         //     $categorias = Categoria::all();
         //     return $categorias;
     
@@ -45,7 +45,7 @@ class SubcategoriaController extends Controller
     }
 
     public function selectSubcategoria(Request $request){
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $subcategorias = Subcategoria::where('condicion','=','1')
         ->select('id','nombre')->orderBy('nombre', 'asc')->get();
         return ['subcategorias' => $subcategorias];
@@ -75,7 +75,7 @@ class SubcategoriaController extends Controller
      */
     public function update(Request $request)
     {
-        // if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $subcategoria = Subcategoria::findOrFail($request->id);
         $subcategoria->nombre = $request->nombre;
         $subcategoria->descripcion = $request->descripcion;

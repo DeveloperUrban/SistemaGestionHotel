@@ -8,7 +8,7 @@ use App\Producto;
 class ProductoController extends Controller
 {
     public function index(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
  
         //  $productos = Producto::all();
         //  return $productos;
@@ -51,7 +51,7 @@ class ProductoController extends Controller
      
      public function listarProductoVenta(Request $request)
      {
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
  
          $buscar = $request->buscar;
          $criterio = $request->criterio;
@@ -75,7 +75,7 @@ class ProductoController extends Controller
      }
 
     public function buscarProductoVenta(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $filtro = $request->filtro;
         $productos = Producto::where('codigo','=',$filtro)
@@ -88,7 +88,7 @@ class ProductoController extends Controller
     }
       
      public function store(Request $request){
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $producto = new Producto();
          $producto->idcategoria = $request->idcategoria;
          $producto->idsubcategoria = $request->idsubcategoria;
@@ -103,7 +103,7 @@ class ProductoController extends Controller
  
      public function update(Request $request)
      {
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $producto = Producto::findOrFail($request->id);
          $producto->idcategoria = $request->idcategoria;
          $producto->idsubcategoria = $request->idsubcategoria;
@@ -117,7 +117,7 @@ class ProductoController extends Controller
      }
  
      public function activar(Request $request){
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $producto = Producto::findOrFail($request->id);
          $producto->condicion='1';
          $producto->save();
@@ -125,7 +125,7 @@ class ProductoController extends Controller
  
      public function desactivar(Request $request)
      {
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $producto = Producto::findOrFail($request->id);
          $producto->condicion='0';
          $producto->save();

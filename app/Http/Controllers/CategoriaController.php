@@ -19,13 +19,12 @@ class CategoriaController extends Controller
         // if (!$request->ajax()) return redirect('/');
         //     $categorias = Categoria::all();
         //     return $categorias;
-    
+       if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         if ($buscar==''){
             $categorias = categoria::orderBy('id', 'desc')->paginate(3);
             // dd($categorias);
-            echo($buscar);
         }
         else{
             $categorias = Categoria::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id', 'desc')->paginate(3);
@@ -46,7 +45,7 @@ class CategoriaController extends Controller
     }
 
     public function selectCategoria(Request $request){
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $categorias = Categoria::where('condicion','=','1')
         ->select('id','nombre')->orderBy('nombre', 'asc')->get();
         return ['categorias' => $categorias];

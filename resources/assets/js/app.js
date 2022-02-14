@@ -16,6 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('dasboard', require('./components/Dasboard.vue'));
+Vue.component('rol', require('./components/Rol.vue'));
 Vue.component('piso', require('./components/Piso.vue'));
 Vue.component('tipohabitacion', require('./components/Tipohabitacion.vue'));
 Vue.component('habitacion', require('./components/Habitacion.vue'));

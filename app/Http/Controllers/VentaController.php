@@ -14,7 +14,7 @@ use App\DetalleVenta;
 class VentaController extends Controller
 {
   public function index(Request $request){
-    //if(!$request->ajax()) return redirect('/');
+    if(!$request->ajax()) return redirect('/');
     $buscar=$request->buscar;
     $criterio = $request->criterio;
 
@@ -57,7 +57,7 @@ class VentaController extends Controller
   }  
 
   public function store(Request $request){
-    //if(!$request->ajax()) return redirect('/');
+    if(!$request->ajax()) return redirect('/');
     try {
         DB::beginTransaction();
         $mytime = Carbon::now('America/Lima');
@@ -98,7 +98,7 @@ class VentaController extends Controller
   }
 
   public function obtenerCabecera(Request $request){
-    //if(!$request->ajax()) return redirect('/');
+    if(!$request->ajax()) return redirect('/');
     $id = $request->id;
     $venta = Venta::join('recepciones','ventas.id_recepcion','=','recepciones.id')
                   ->join('personas','recepciones.id_cliente','personas.id')
@@ -111,7 +111,7 @@ class VentaController extends Controller
   }
 
   public function obtenerDetalles(Request $request){
-    //if(!$request->ajax()) return redirect('/');
+    if(!$request->ajax()) return redirect('/');
 
     $id = $request->id;
         $detalles = DetalleVenta::join('productos','detalle_ventas.id_producto','=','productos.id')
@@ -123,7 +123,7 @@ class VentaController extends Controller
         return ['detalles' => $detalles];
   }
   public function desactivar(Request $request){
-   // if(!$request->ajax()) return redirect('/');
+   if(!$request->ajax()) return redirect('/');
    $venta=Venta::findOrFail($request->id);
    $venta->estado = 'Cancelado';
    $venta->save();

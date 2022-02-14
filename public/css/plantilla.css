@@ -1242,7 +1242,8 @@ pre {
   background-image: none;
   background-clip: padding-box;
   border: 1px solid #c2cfd6;
-  border-radius: 0;
+  border-radius: 0.3em;
+  
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
   .form-control::-ms-expand {
     background-color: transparent;
@@ -7723,10 +7724,10 @@ base-chart.chart {
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #fff;
-    background-image: url("../img/logo.png");
+    background-image: url("../img/LogoGrupoInmobiliario.png");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 70px auto;
+    background-size: 95%;
     border-bottom: 1px solid #c2cfd6; }
   .app-header.navbar .navbar-toggler {
     min-width: 50px;
@@ -8925,7 +8926,9 @@ app-root {
       flex-direction: row;
   -ms-flex-positive: 1;
       flex-grow: 1;
-  overflow-x: hidden; }
+  overflow-x: hidden; 
+  min-height: calc(100vh - 54px - 50px);
+}
   .app-body .main {
     -ms-flex: 1;
         flex: 1;

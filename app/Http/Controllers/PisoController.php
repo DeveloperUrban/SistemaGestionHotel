@@ -21,6 +21,7 @@ class PisoController extends Controller
         // $piso = DB::table('pisos')->paginate(8);
         // return $piso;
     //Ahora se hará la consulta usando eloquent
+    if (!$request->ajax()) return redirect('/');
         $pisos = Piso::paginate(5);
         return [
             'pagination'=>[
@@ -36,7 +37,7 @@ class PisoController extends Controller
     }
 
     public function selectPiso(Request $request){
-        // if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         // $categorias = Categoria::where('condicion','=','1')
         // ->select('id','nombre')->orderBy('nombre', 'asc')->get();
         // return ['categorias' => $categorias];
@@ -51,6 +52,7 @@ class PisoController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$request->ajax()) return redirect('/');
         $piso = new  Piso();
         $piso->nombre=$request->nombre;
         $piso->descripcion =$request->descripcion;
@@ -59,6 +61,7 @@ class PisoController extends Controller
 
     public function update(Request $request)
     {
+        if (!$request->ajax()) return redirect('/');
         $piso = Piso::findOrFail($request->id);
         $piso->nombre=$request->nombre;
         $piso->descripcion=$request->descripcion;
@@ -74,6 +77,7 @@ class PisoController extends Controller
      */
     public function destroy($id)
     {
+        if (!$request->ajax()) return redirect('/');
         $piso = Piso::findOrFail($id);
         $piso->delete();
     }

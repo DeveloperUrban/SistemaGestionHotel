@@ -16,7 +16,7 @@ class TipohabitacionController extends Controller
     {
         // $tipos = Tipohabitacion::all();
         // return $tipos;
-       // if (!$request->ajax()) return redirect('/');
+       if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
@@ -43,7 +43,7 @@ class TipohabitacionController extends Controller
     }
 
     public function selectTipohabitacion(Request $request){
-        // if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         // $categorias = Categoria::where('condicion','=','1')
         // ->select('id','nombre')->orderBy('nombre', 'asc')->get();
         // return ['categorias' => $categorias];
@@ -54,6 +54,7 @@ class TipohabitacionController extends Controller
 
     public function store(Request $request)
     {
+        if (!$request->ajax()) return redirect('/');
         $tipohabitacion = new Tipohabitacion();
         $tipohabitacion->nombre=$request->nombre;
         $tipohabitacion->descripcion =$request->descripcion;
@@ -70,6 +71,7 @@ class TipohabitacionController extends Controller
      */
     public function update(Request $request)
     {
+        if (!$request->ajax()) return redirect('/');
         $tipohabitacion = Tipohabitacion::findOrFail($request->id);
         $tipohabitacion->nombre=$request->nombre;
         $tipohabitacion->descripcion=$request->descripcion;
@@ -79,7 +81,7 @@ class TipohabitacionController extends Controller
 
     public function activar(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $tipohabitacion = Tipohabitacion::findOrFail($request->id);
         $tipohabitacion->condicion = '1';
         $tipohabitacion->save();
@@ -87,7 +89,7 @@ class TipohabitacionController extends Controller
 
     public function desactivar(Request $request){
                 
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $tipohabitacion = Tipohabitacion::findOrFail($request->id);
         $tipohabitacion->condicion = '0';
         $tipohabitacion->save();

@@ -8,7 +8,7 @@ use App\Recepcion;
 class RecepcionController extends Controller
 {
     public function index(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
  
          // $habitaciones = Habitacion::all();
          // return $habitaciones;
@@ -54,14 +54,8 @@ class RecepcionController extends Controller
      }
 
      public function selectRecepcion(Request $request){
+        if (!$request->ajax()) return redirect('/');
         $filtro = $request->filtro;
-        // $recepciones = Recepcion::where('apellidos_nombre', 'like', '%'. $filtro . '%')
-        // ->orWhere('numero_documento', 'like', '%'. $filtro . '%')
-        // ->select('id','apellidos_nombre','numero_documento','tipo_documento','email')
-        // ->orderBy('apellidos_nombre', 'asc')->get();
-
-        // return ['clientes' => $clientes];
-
         $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
                                 ->join('personas','recepciones.id_cliente','=','personas.id')
                                 ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
@@ -78,7 +72,7 @@ class RecepcionController extends Controller
      }
  
      public function store(Request $request){
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $recepcion = new Recepcion();
          $recepcion->id_habitacion=$request->id_habitacion;
          $recepcion->id_cliente=$request->id_cliente;
@@ -95,7 +89,7 @@ class RecepcionController extends Controller
      }
  
      public function obtenerRecepcion(Request $request){
-        //  if(!$request->ajax()) return redirect('/');
+         if(!$request->ajax()) return redirect('/');
         $id = $request->id;
         $recepciones = Recepcion::join('habitaciones','recepciones.id_habitacion','=','habitaciones.id')
              ->join('tipohabitaciones','habitaciones.idtipohabitacion','=','tipohabitaciones.id')
@@ -113,7 +107,7 @@ class RecepcionController extends Controller
      }
  
      public function activar(Request $request){
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $habitacion = Habitacion::findOrFail($request->id);
          $habitacion->estado='1';
          $habitacion->save();
@@ -121,7 +115,7 @@ class RecepcionController extends Controller
  
      public function desactivar(Request $request)
      {
-         //if (!$request->ajax()) return redirect('/');
+         if (!$request->ajax()) return redirect('/');
          $habitacion = Recepcion::findOrFail($request->id);
          $habitacion->estado='Anulado';
          $habitacion->save();
